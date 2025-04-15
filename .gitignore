@@ -1,0 +1,17 @@
+# 🚫 IntelliJ / IDEs
+.idea/
+*.iml
+*.ipr
+
+# 🚫 Mac / Linux / Windows basura
+.DS_Store
+Thumbs.db
+
+# 🚫 Java / Spring Boot (Maven)
+backend_fantasyone/target/
+backend_fantasyone/.mvn/
+
+# 🚫 Node.js / React
+frontend_react/node_modules/
+frontend_react/build/
+frontend_react/dist/
