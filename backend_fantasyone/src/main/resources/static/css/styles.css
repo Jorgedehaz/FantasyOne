@@ -1,0 +1,19 @@
+:root {
+    --primary-color: #2D2D2D;
+    --accent-color: #E63946;
+    --text-color: #F8F8F8;
+}
+
+body {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.icon {
+    color: var(--accent-color);
+}
