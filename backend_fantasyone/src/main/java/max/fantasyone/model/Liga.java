@@ -26,6 +26,55 @@ public class Liga {
     @OneToMany(mappedBy = "liga", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApuestaVirtual> apuestas = new ArrayList<>();
 
+    public Liga() {
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public boolean isPrivada() {
+        return privada;
+    }
+
+    public void setPrivada(boolean privada) {
+        this.privada = privada;
+    }
+
+    public String getCodigoAcceso() {
+        return codigoAcceso;
+    }
+
+    public void setCodigoAcceso(String codigoAcceso) {
+        this.codigoAcceso = codigoAcceso;
+    }
+
+    public List<EquipoUsuario> getEquipos() {
+        return equipos;
+    }
+
+    public void setEquipos(List<EquipoUsuario> equipos) {
+        this.equipos = equipos;
+    }
+
+    public List<ApuestaVirtual> getApuestas() {
+        return apuestas;
+    }
+
+    public void setApuestas(List<ApuestaVirtual> apuestas) {
+        this.apuestas = apuestas;
+    }
 }
 

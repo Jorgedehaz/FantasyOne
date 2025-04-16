@@ -42,4 +42,86 @@ public class ApuestaVirtual {
     @Column(nullable = false)
     private LocalDateTime fecha;
 
+    public ApuestaVirtual() {
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Liga getLiga() {
+        return liga;
+    }
+
+    public void setLiga(Liga liga) {
+        this.liga = liga;
+    }
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
+    }
+
+    public boolean isAcertada() {
+        return acertada;
+    }
+
+    public void setAcertada(boolean acertada) {
+        this.acertada = acertada;
+    }
+
+    public Piloto getPiloto() {
+        return piloto;
+    }
+
+    public void setPiloto(Piloto piloto) {
+        this.piloto = piloto;
+    }
+
+    public TipoApuesta getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoApuesta tipo) {
+        this.tipo = tipo;
+    }
+
+    public double getApostado() {
+        return apostado;
+    }
+
+    public void setApostado(double apostado) {
+        this.apostado = apostado;
+    }
+
+    public double getGanado() {
+        return ganado;
+    }
+
+    public void setGanado(double ganado) {
+        this.ganado = ganado;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
 }

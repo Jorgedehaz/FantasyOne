@@ -46,5 +46,104 @@ public class ResultadoCarrera {
 
     @Column(nullable = false)
     private int puntosFantasy; // hay que calcularlos con algoritmo
+
+    public ResultadoCarrera() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Piloto getPiloto() {
+        return piloto;
+    }
+
+    public void setPiloto(Piloto piloto) {
+        this.piloto = piloto;
+    }
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
+    }
+
+    public int getPosicionFinal() {
+        return posicionFinal;
+    }
+
+    public void setPosicionFinal(int posicionFinal) {
+        this.posicionFinal = posicionFinal;
+    }
+
+    public boolean isVueltaRapida() {
+        return vueltaRapida;
+    }
+
+    public void setVueltaRapida(boolean vueltaRapida) {
+        this.vueltaRapida = vueltaRapida;
+    }
+
+    public boolean isPolePosition() {
+        return polePosition;
+    }
+
+    public void setPolePosition(boolean polePosition) {
+        this.polePosition = polePosition;
+    }
+
+    public boolean isPenalizado() {
+        return penalizado;
+    }
+
+    public void setPenalizado(boolean penalizado) {
+        this.penalizado = penalizado;
+    }
+
+    public double getTiempoTotal() {
+        return tiempoTotal;
+    }
+
+    public void setTiempoTotal(double tiempoTotal) {
+        this.tiempoTotal = tiempoTotal;
+    }
+
+    public int getParadasBoxes() {
+        return paradasBoxes;
+    }
+
+    public void setParadasBoxes(int paradasBoxes) {
+        this.paradasBoxes = paradasBoxes;
+    }
+
+    public int getStints() {
+        return stints;
+    }
+
+    public void setStints(int stints) {
+        this.stints = stints;
+    }
+
+    public Neumatico getTipoNeumatico() {
+        return tipoNeumatico;
+    }
+
+    public void setTipoNeumatico(Neumatico tipoNeumatico) {
+        this.tipoNeumatico = tipoNeumatico;
+    }
+
+    public int getPuntosFantasy() {
+        return puntosFantasy;
+    }
+
+    public void setPuntosFantasy(int puntosFantasy) {
+        this.puntosFantasy = puntosFantasy;
+    }
 }
 
