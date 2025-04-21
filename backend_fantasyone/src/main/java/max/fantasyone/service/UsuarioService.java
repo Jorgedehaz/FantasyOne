@@ -37,5 +37,25 @@ public class UsuarioService {
     public boolean existePorEmail(String email) {
         return usuarioRepository.existsByEmail(email);
     }
+
+    //metodo para que un Admin pueda dar de baja un User sin eliminar los datos de la BD
+    public Optional<Usuario> cambiarEstadoActivo(Long id, boolean activo) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+        usuarioOpt.ifPresent(usuario -> {
+            usuario.setActivo(activo);
+            usuarioRepository.save(usuario);
+        });
+        return usuarioOpt;
+    }
+
+    public List<Usuario> obtenerUsuariosActivos() {
+        return usuarioRepository.findByActivoTrue();
+    }
+
+    public List<Usuario> obtenerPorEstado(boolean activo) {
+        return usuarioRepository.findByActivo(activo);
+    }
+
+
 }
 

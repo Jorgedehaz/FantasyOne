@@ -37,5 +37,10 @@ public class LigaService {
     public void eliminar(Long id) {
         ligaRepository.deleteById(id);
     }
+
+    public List<Liga> obtenerPorPrivacidad(boolean privada) {
+        return ligaRepository.findByPrivada(privada);
+    }
+
 }
 

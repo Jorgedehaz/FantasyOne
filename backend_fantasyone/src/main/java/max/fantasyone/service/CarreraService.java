@@ -33,5 +33,13 @@ public class CarreraService {
     public Optional<Carrera> buscarPorMeetingKey(int meetingKey) {
         return carreraRepository.findByMeetingKey(meetingKey);
     }
+
+    public void eliminar(Long id) {
+        carreraRepository.deleteById(id);
+    }
+
+    public Optional<Carrera> buscarPorNombre (String nombre){
+        return carreraRepository.findByNombreGP(nombre);
+    }
 }
 

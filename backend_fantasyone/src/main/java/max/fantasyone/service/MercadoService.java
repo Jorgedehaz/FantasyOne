@@ -34,5 +34,9 @@ public class MercadoService {
     public Mercado guardar(Mercado mercado) {
         return mercadoRepository.save(mercado);
     }
+
+    public void eliminar (Long id){
+        mercadoRepository.deleteById(id);
+    }
 }
 

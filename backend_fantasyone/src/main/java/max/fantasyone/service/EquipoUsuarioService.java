@@ -34,6 +34,14 @@ public class EquipoUsuarioService {
         equipoUsuarioRepository.deleteById(id);
     }
 
+    public List<EquipoUsuario> buscarPorUsuario(Long usuarioId) {
+        return equipoUsuarioRepository.findByUsuario_Id(usuarioId);
+    }
+
+    public List<EquipoUsuario> buscarPorLiga(Long ligaId) {
+        return equipoUsuarioRepository.findByLiga_Id(ligaId);
+    }
+
     public Optional<EquipoUsuario> buscarPorUsuarioYLiga(Long usuarioId, Long ligaId) {
         return equipoUsuarioRepository.findByUsuario_IdAndLiga_Id(usuarioId, ligaId);
     }

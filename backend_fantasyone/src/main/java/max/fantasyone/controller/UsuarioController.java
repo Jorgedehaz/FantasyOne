@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -51,5 +52,26 @@ public class UsuarioController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    // PUT /api/usuarios/{id}/estado?activo=true|false
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<Usuario> cambiarEstado(@PathVariable Long id, @RequestParam boolean activo) {
+        Optional<Usuario> actualizado = usuarioService.cambiarEstadoActivo(id, activo);
+        return actualizado.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    // GET /api/usuarios/activos = solo usuarios activos
+    @GetMapping("/activos")
+    public List<Usuario> obtenerSoloActivos() {
+        return usuarioService.obtenerUsuariosActivos();
+    }
+
+    // GET /api/usuarios/estado activo=true||false . Para el filtro por estado
+    @GetMapping("/estado")
+    public List<Usuario> obtenerPorEstado(@RequestParam boolean activo) {
+        return usuarioService.obtenerPorEstado(activo);
+    }
+
+
 }
 
