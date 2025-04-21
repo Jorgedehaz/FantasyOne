@@ -32,7 +32,7 @@ public class ResultadoCarrera {
     private boolean penalizado;
 
     @Column(nullable = false)
-    private double tiempoTotal;
+    private String tiempoTotal; // si da error pasar a Double en entity , dtos y mapper
 
     @Column(nullable = false)
     private int paradasBoxes;
@@ -106,11 +106,11 @@ public class ResultadoCarrera {
         this.penalizado = penalizado;
     }
 
-    public double getTiempoTotal() {
+    public String getTiempoTotal() {
         return tiempoTotal;
     }
 
-    public void setTiempoTotal(double tiempoTotal) {
+    public void setTiempoTotal(String tiempoTotal) {
         this.tiempoTotal = tiempoTotal;
     }
 

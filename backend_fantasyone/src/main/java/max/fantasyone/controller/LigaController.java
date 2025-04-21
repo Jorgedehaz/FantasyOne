@@ -1,5 +1,8 @@
 package max.fantasyone.controller;
 
+import max.fantasyone.dto.request.LigaRequestDTO;
+import max.fantasyone.dto.response.LigaResponseDTO;
+import max.fantasyone.mapper.LigaMapper;
 import max.fantasyone.model.Liga;
 import max.fantasyone.service.LigaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,45 +17,56 @@ import java.util.List;
 public class LigaController {
 
     private final LigaService ligaService;
+    private final LigaMapper ligaMapper;
 
     @Autowired
-    public LigaController(LigaService ligaService) {
+    public LigaController(LigaService ligaService, LigaMapper ligaMapper) {
         this.ligaService = ligaService;
+        this.ligaMapper = ligaMapper;
     }
 
     // GET /api/ligas → obtener todas las ligas
     @GetMapping
-    public List<Liga> obtenerTodas() {
-        return ligaService.obtenerTodas();
+    public List<LigaResponseDTO> obtenerTodas() {
+        return ligaService.obtenerTodas()
+                .stream()
+                .map(ligaMapper::toDTO)
+                .toList();
     }
 
     // GET /api/ligas/{id} → obtener una liga por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Liga> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<LigaResponseDTO> obtenerPorId(@PathVariable Long id) {
         return ligaService.obtenerPorId(id)
+                .map(ligaMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // POST /api/ligas → crear una nueva liga
     @PostMapping
-    public ResponseEntity<Liga> crear(@RequestBody Liga liga) {
+    public ResponseEntity<LigaResponseDTO> crear(@RequestBody LigaRequestDTO dto) {
+        Liga liga = ligaMapper.toEntity(dto);
         Liga guardada = ligaService.guardar(liga);
-        return ResponseEntity.status(HttpStatus.CREATED).body(guardada);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ligaMapper.toDTO(guardada));
     }
 
     // GET /api/ligas/nombre/{nombre} → buscar por nombre exacto
     @GetMapping("/nombre/{nombre}")
-    public ResponseEntity<Liga> buscarPorNombre(@PathVariable String nombre) {
+    public ResponseEntity<LigaResponseDTO> buscarPorNombre(@PathVariable String nombre) {
         return ligaService.buscarPorNombre(nombre)
+                .map(ligaMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // GET /api/ligas/privadas?esPrivada=true|false → filtrar por si es privada o pública
+    // GET /api/ligas/privadas?esPrivada=true|false → filtrar por privadas/públicas
     @GetMapping("/privadas")
-    public List<Liga> obtenerPorPrivacidad(@RequestParam boolean esPrivada) {
-        return ligaService.obtenerPorPrivacidad(esPrivada);
+    public List<LigaResponseDTO> obtenerPorPrivacidad(@RequestParam boolean esPrivada) {
+        return ligaService.obtenerPorPrivacidad(esPrivada)
+                .stream()
+                .map(ligaMapper::toDTO)
+                .toList();
     }
 
     // DELETE /api/ligas/{id} → eliminar una liga por ID
@@ -62,6 +76,6 @@ public class LigaController {
             return ResponseEntity.notFound().build();
         }
         ligaService.eliminar(id);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build();
     }
 }

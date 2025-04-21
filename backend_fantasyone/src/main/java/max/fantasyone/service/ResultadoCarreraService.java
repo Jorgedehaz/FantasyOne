@@ -22,6 +22,10 @@ public class ResultadoCarreraService {
         return resultadoRepository.findAll();
     }
 
+    public Optional<ResultadoCarrera> obtenerPorId(Long id) {
+        return resultadoRepository.findById(id);
+    }
+
     public ResultadoCarrera guardar(ResultadoCarrera resultado) {
         return resultadoRepository.save(resultado);
     }
@@ -33,5 +37,15 @@ public class ResultadoCarreraService {
     public Optional<ResultadoCarrera> buscarPorPilotoYCarrera(Long pilotoId, Long carreraId) {
         return resultadoRepository.findByPiloto_IdAndCarrera_Id(pilotoId, carreraId);
     }
+
+    public List<ResultadoCarrera> buscarPorCarrera(Long carreraId) {
+        return resultadoRepository.findByCarrera_Id(carreraId);
+    }
+
+    public void eliminar(Long id) {
+        resultadoRepository.deleteById(id);
+    }
+
+
 }
 

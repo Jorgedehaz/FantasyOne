@@ -1,5 +1,8 @@
 package max.fantasyone.controller;
 
+import max.fantasyone.dto.request.MercadoRequestDTO;
+import max.fantasyone.dto.response.MercadoResponseDTO;
+import max.fantasyone.mapper.MercadoMapper;
 import max.fantasyone.model.Mercado;
 import max.fantasyone.service.MercadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,46 +19,53 @@ import java.util.List;
 public class MercadoController {
 
     private final MercadoService mercadoService;
+    private final MercadoMapper mercadoMapper;
 
     @Autowired
-    public MercadoController(MercadoService mercadoService) {
+    public MercadoController(MercadoService mercadoService, MercadoMapper mercadoMapper) {
         this.mercadoService = mercadoService;
+        this.mercadoMapper = mercadoMapper;
     }
 
     // GET /api/mercado → obtener todos los mercados
     @GetMapping
-    public List<Mercado> obtenerTodos() {
-        return mercadoService.obtenerTodos();
+    public List<MercadoResponseDTO> obtenerTodos() {
+        return mercadoService.obtenerTodos()
+                .stream()
+                .map(mercadoMapper::toDTO)
+                .toList();
     }
 
     // GET /api/mercado/{id} → obtener mercado por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Mercado> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<MercadoResponseDTO> obtenerPorId(@PathVariable Long id) {
         return mercadoService.obtenerPorId(id)
+                .map(mercadoMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // GET /api/mercado/fecha/{fecha} → buscar mercado por fecha
     @GetMapping("/fecha/{fecha}")
-    public ResponseEntity<Mercado> obtenerPorFecha(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+    public ResponseEntity<MercadoResponseDTO> obtenerPorFecha(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         return mercadoService.buscarPorFecha(fecha)
+                .map(mercadoMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST /api/mercado → crear un nuevo mercado
+    // POST /api/mercado → crear nuevo mercado
     @PostMapping
-    public ResponseEntity<Mercado> crear(@RequestBody Mercado mercado) {
-        // Evitar duplicados por fecha
-        if (mercadoService.buscarPorFecha(mercado.getFecha()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+    public ResponseEntity<MercadoResponseDTO> crear(@RequestBody MercadoRequestDTO dto) {
+        if (mercadoService.buscarPorFecha(dto.getFecha()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+        Mercado mercado = mercadoMapper.toEntity(dto);
         Mercado creado = mercadoService.guardar(mercado);
-        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mercadoMapper.toDTO(creado));
     }
 
-    // DELETE /api/mercado/{id} → eliminar un mercado por ID
+    // DELETE /api/mercado/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (mercadoService.obtenerPorId(id).isEmpty()) {
@@ -65,4 +75,3 @@ public class MercadoController {
         return ResponseEntity.noContent().build();
     }
 }
-

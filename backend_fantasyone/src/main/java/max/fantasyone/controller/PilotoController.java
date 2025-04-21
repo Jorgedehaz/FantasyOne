@@ -1,5 +1,8 @@
 package max.fantasyone.controller;
 
+import max.fantasyone.dto.request.PilotoRequestDTO;
+import max.fantasyone.dto.response.PilotoResponseDTO;
+import max.fantasyone.mapper.PilotoMapper;
 import max.fantasyone.model.Piloto;
 import max.fantasyone.service.PilotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +17,45 @@ import java.util.List;
 public class PilotoController {
 
     private final PilotoService pilotoService;
+    private final PilotoMapper pilotoMapper;
 
-    @Autowired //sugerencia de ChatGPT. En las ultimas versiones de Spring la notacion va en el constructor (buenas practicas)
-    public PilotoController(PilotoService pilotoService) {
+    @Autowired
+    public PilotoController(PilotoService pilotoService, PilotoMapper pilotoMapper) {
         this.pilotoService = pilotoService;
+        this.pilotoMapper = pilotoMapper;
     }
 
-    // GET /api/pilotos → listar todos
+    // GET /api/pilotos → listar todos con DTO
     @GetMapping
-    public List<Piloto> obtenerTodos() {
-        return pilotoService.obtenerTodos();
+    public List<PilotoResponseDTO> obtenerTodos() {
+        return pilotoService.obtenerTodos()
+                .stream()
+                .map(pilotoMapper::toDTO)
+                .toList();
     }
 
     // GET /api/pilotos/nofichados → para el mercado
     @GetMapping("/nofichados")
-    public List<Piloto> obtenerNoFichados() {
-        return pilotoService.obtenerPilotosNoFichados();
+    public List<PilotoResponseDTO> obtenerNoFichados() {
+        return pilotoService.obtenerPilotosNoFichados()
+                .stream()
+                .map(pilotoMapper::toDTO)
+                .toList();
     }
 
-    // POST /api/pilotos → crear nuevo piloto (para pruebas)
+    // POST /api/pilotos → crear nuevo piloto
     @PostMapping
-    public ResponseEntity<Piloto> crear(@RequestBody Piloto piloto) {
+    public ResponseEntity<PilotoResponseDTO> crear(@RequestBody PilotoRequestDTO dto) {
+        Piloto piloto = pilotoMapper.toEntity(dto);
         Piloto guardado = pilotoService.guardar(piloto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pilotoMapper.toDTO(guardado));
     }
 
     // GET /api/pilotos/{id} → consultar piloto por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Piloto> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<PilotoResponseDTO> obtenerPorId(@PathVariable Long id) {
         return pilotoService.obtenerPorId(id)
+                .map(pilotoMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
