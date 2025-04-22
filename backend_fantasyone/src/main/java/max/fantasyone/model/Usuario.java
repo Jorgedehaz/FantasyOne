@@ -21,7 +21,7 @@ public class Usuario {
     private String password;
 
     @Column(nullable = false)
-    private String rol = "JUGADOR"; // "ADMIN" o "JUGADOR"
+    private String rol; // "ADMIN" o "USER"
 
     @Column(nullable = false)
     private boolean activo = true;
@@ -98,5 +98,10 @@ public class Usuario {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    public boolean isAdmin() {
+        return "ADMIN".equalsIgnoreCase(this.rol);
+    }
+
 }
 

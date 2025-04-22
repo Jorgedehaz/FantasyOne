@@ -4,7 +4,8 @@ public class UsuarioRequestDTO {
     private String nombre;
     private String email;
     private String password;
-    private String rol; // ADMIN o JUGADOR
+    private boolean activo;
+
 
 
     public UsuarioRequestDTO() {}
@@ -33,12 +34,12 @@ public class UsuarioRequestDTO {
         this.password = password;
     }
 
-    public String getRol() {
-        return rol;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }
 

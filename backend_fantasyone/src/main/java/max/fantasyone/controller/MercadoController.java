@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/mercado")
+@RequestMapping("/api/mercados")
 public class MercadoController {
 
     private final MercadoService mercadoService;

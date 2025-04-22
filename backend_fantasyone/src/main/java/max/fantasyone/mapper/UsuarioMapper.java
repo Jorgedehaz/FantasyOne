@@ -13,8 +13,11 @@ public class UsuarioMapper {
         usuario.setNombre(dto.getNombre());
         usuario.setEmail(dto.getEmail());
         usuario.setPassword(dto.getPassword());
-        usuario.setRol(dto.getRol());
-        usuario.setActivo(true); // por defecto al crear
+        usuario.setActivo(dto.isActivo());
+
+        // Por defecto, todos serán USER (por ahora genero un ADMIN que más adelante podrá crear otros)
+        usuario.setRol("USER");
+
         return usuario;
     }
 
@@ -28,4 +31,7 @@ public class UsuarioMapper {
         );
     }
 }
+
+
+
 

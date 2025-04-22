@@ -26,6 +26,9 @@ public class Liga {
     @OneToMany(mappedBy = "liga", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApuestaVirtual> apuestas = new ArrayList<>();
 
+    @OneToOne(mappedBy = "liga", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Mercado mercado;
+
     public Liga() {
     }
 
@@ -75,6 +78,14 @@ public class Liga {
 
     public void setApuestas(List<ApuestaVirtual> apuestas) {
         this.apuestas = apuestas;
+    }
+
+    public Mercado getMercado() {
+        return mercado;
+    }
+
+    public void setMercado(Mercado mercado) {
+        this.mercado = mercado;
     }
 }
 

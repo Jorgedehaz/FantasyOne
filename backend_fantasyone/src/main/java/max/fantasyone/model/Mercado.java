@@ -15,6 +15,10 @@ public class Mercado {
     @Column(nullable = false)
     private LocalDate fecha;
 
+    @ManyToOne
+    @JoinColumn(name = "liga_id", nullable = false)
+    private Liga liga;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "mercado_pilotos", joinColumns = @JoinColumn(name = "mercado_id"),
             inverseJoinColumns = @JoinColumn(name = "piloto_id"))
@@ -45,6 +49,14 @@ public class Mercado {
 
     public void setPilotosDia(List<Piloto> pilotosDia) {
         this.pilotosDia = pilotosDia;
+    }
+
+    public Liga getLiga() {
+        return liga;
+    }
+
+    public void setLiga(Liga liga) {
+        this.liga = liga;
     }
 }
 
