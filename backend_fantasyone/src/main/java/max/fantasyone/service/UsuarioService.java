@@ -1,5 +1,6 @@
 package max.fantasyone.service;
 
+import max.fantasyone.dto.request.RegistroRequestDTO;
 import max.fantasyone.model.Usuario;
 import max.fantasyone.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,42 @@ public class UsuarioService {
     public List<Usuario> obtenerPorEstado(boolean activo) {
         return usuarioRepository.findByActivo(activo);
     }
+
+    public Usuario registrarUsuario(RegistroRequestDTO dto) {
+        // Validar nombre
+        if (dto.getNombre() == null || dto.getNombre().length() < 3 || !dto.getNombre().matches("[a-zA-Z0-9]+")) {
+            throw new IllegalArgumentException("El nombre debe tener al menos 3 caracteres y solo contener letras o números.");
+        }
+
+        // Validar email
+        if (!dto.getEmail().matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            throw new IllegalArgumentException("El email no tiene un formato válido.");
+        }
+
+        // Verificar si el nombre o email ya existen
+        if (usuarioRepository.existsByNombreIgnoreCase(dto.getNombre())) {
+            throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
+        }
+
+        if (usuarioRepository.existsByEmailIgnoreCase(dto.getEmail())) {
+            throw new IllegalArgumentException("El email ya está en uso.");
+        }
+
+        // Comprobar contraseñas
+        if (!dto.getPassword().equals(dto.getPassword2())) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden.");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNombre(dto.getNombre());
+        usuario.setEmail(dto.getEmail());
+        usuario.setPassword(dto.getPassword()); // Puedes encriptar si lo deseas
+        usuario.setRol("USER");
+        usuario.setActivo(true);
+
+        return usuarioRepository.save(usuario);
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package max.fantasyone.controller;
 
 import max.fantasyone.dto.request.LoginRequestDTO;
+import max.fantasyone.dto.request.RegistroRequestDTO;
 import max.fantasyone.dto.request.UsuarioRequestDTO;
 import max.fantasyone.dto.response.UsuarioResponseDTO;
 import max.fantasyone.mapper.UsuarioMapper;
@@ -25,11 +26,15 @@ public class AuthController {
 
     // Registro
     @PostMapping("/register")
-    public ResponseEntity<UsuarioResponseDTO> register(@RequestBody UsuarioRequestDTO dto) {
-        Usuario nuevo = usuarioMapper.toEntity(dto);
-        Usuario guardado = usuarioService.guardar(nuevo);
-        return ResponseEntity.ok(usuarioMapper.toDTO(guardado));
+    public ResponseEntity<?> register(@RequestBody RegistroRequestDTO dto) {
+        try {
+            Usuario nuevo = usuarioService.registrarUsuario(dto);
+            return ResponseEntity.ok(usuarioMapper.toDTO(nuevo));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
+
 
     // Login
     @PostMapping("/login")
