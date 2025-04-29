@@ -15,16 +15,18 @@ function LoginPage() {
         setError("");
         try {
             const response = await axios.post("http://localhost:8080/api/auth/login", formData);
-            console.log("Usuario logueado:", response.data);
-            // Aquí guardarías los datos en el contexto o localStorage
+            const userData = response.data;
+            localStorage.setItem("usuario", JSON.stringify(userData)); // Guardar los datos del usuario (por ahora usare esto para la sesion)
+            window.location.href = "/hubligas"; // Redirigir al hub tras login
         } catch (err) {
             if (err.response && err.response.data) {
-                setError(err.response.data); // Mostramos el mensaje recibido del backend
+                setError(err.response.data);
             } else {
                 setError("Error inesperado");
             }
         }
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#2E3336]">

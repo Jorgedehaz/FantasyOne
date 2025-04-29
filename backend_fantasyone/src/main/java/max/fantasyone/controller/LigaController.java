@@ -1,10 +1,13 @@
 package max.fantasyone.controller;
 
 import max.fantasyone.dto.request.LigaRequestDTO;
+import max.fantasyone.dto.request.UnirseLigaPrivadaRequestDTO;
+import max.fantasyone.dto.request.UnirseLigaRequestDTO;
 import max.fantasyone.dto.response.LigaResponseDTO;
 import max.fantasyone.mapper.LigaMapper;
 import max.fantasyone.model.Liga;
 import max.fantasyone.service.LigaService;
+import max.fantasyone.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +21,12 @@ public class LigaController {
 
     private final LigaService ligaService;
     private final LigaMapper ligaMapper;
+    private final UsuarioService usuarioService;
 
     @Autowired
-    public LigaController(LigaService ligaService, LigaMapper ligaMapper) {
+    public LigaController(LigaService ligaService, UsuarioService usuarioService, LigaMapper ligaMapper) {
         this.ligaService = ligaService;
+        this.usuarioService = usuarioService;
         this.ligaMapper = ligaMapper;
     }
 
@@ -78,4 +83,38 @@ public class LigaController {
         ligaService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+    // POST /api/ligas/{id}/unirse → unirse a una liga por su ID
+    @PostMapping("/{id}/unirse")
+    public ResponseEntity<String> unirseALiga(@PathVariable Long id, @RequestBody UnirseLigaRequestDTO request) {
+        try {
+            ligaService.unirseALiga(id, request.getUsuarioId());
+            return ResponseEntity.ok("Te has unido a la liga correctamente.");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    // POST /api/ligas/unirsePrivada → unirse a una liga privada usando nombre y clave
+    @PostMapping("/unirsePrivada")
+    public ResponseEntity<String> unirseALigaPrivada(@RequestBody UnirseLigaPrivadaRequestDTO request) {
+        try {
+            ligaService.unirseALigaPrivada(request.getNombreLiga(), request.getClaveAcceso(), request.getUsuarioId());
+            return ResponseEntity.ok("Te has unido a la liga privada correctamente.");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+
+    // GET /api/ligas/privadas/{id} → obtener ligas privadas del usuario
+    @GetMapping("/privadas/{id}")
+    public ResponseEntity<List<LigaResponseDTO>> obtenerLigasPrivadasUsuario(@PathVariable Long id) {
+        List<Liga> ligas = usuarioService.obtenerLigasPrivadas(id);
+        List<LigaResponseDTO> dtos = ligas.stream().map(ligaMapper::toDTO).toList();
+        return ResponseEntity.ok(dtos);
+    }
+
+
+
 }

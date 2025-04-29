@@ -1,7 +1,9 @@
 package max.fantasyone.service;
 
 import max.fantasyone.model.Liga;
+import max.fantasyone.model.Usuario;
 import max.fantasyone.repository.LigaRepository;
+import max.fantasyone.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,13 @@ import java.util.Optional;
 public class LigaService {
 
     private final LigaRepository ligaRepository;
+    private final UsuarioRepository usuarioRepository;
 
+    // Si es necesario declaramos los repository necesarios y los incluimos en el constructor
     @Autowired
-    public LigaService(LigaRepository ligaRepository) {
+    public LigaService(LigaRepository ligaRepository, UsuarioRepository usuarioRepository) {
         this.ligaRepository = ligaRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public List<Liga> obtenerTodas() {
@@ -41,6 +46,61 @@ public class LigaService {
     public List<Liga> obtenerPorPrivacidad(boolean privada) {
         return ligaRepository.findByPrivada(privada);
     }
+
+    public void unirseALiga(Long ligaId, Long usuarioId) {
+        Liga liga = ligaRepository.findById(ligaId)
+                .orElseThrow(() -> new IllegalArgumentException("Liga no encontrada"));
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        if (liga.getUsuarios().contains(usuario)) {
+            throw new IllegalStateException("Ya estás unido a esta liga");
+        }
+
+        if (liga.getUsuarios().size() >= liga.getMaxUsuarios()) {
+            throw new IllegalStateException("La liga ya está completa");
+        }
+
+        liga.getUsuarios().add(usuario);
+        usuario.getLigas().add(liga);
+
+        ligaRepository.save(liga); // guarda también la relación entre el usuario y la liga a la que se une
+        usuarioRepository.save(usuario);
+    }
+
+    public void unirseALigaPrivada(String nombreLiga, String claveAcceso, Long usuarioId) {
+        Liga liga = ligaRepository.findByNombre(nombreLiga)
+                .orElseThrow(() -> new IllegalArgumentException("Liga no encontrada"));
+
+        // Hay que comprobar si es privada
+        if (!liga.isPrivada()) {
+            throw new IllegalStateException("La liga no es privada.");
+        }
+
+        // Y ver si la clave es correcta
+        if (!liga.getCodigoAcceso().equals(claveAcceso)) {
+            throw new IllegalArgumentException("Clave de acceso incorrecta.");
+        }
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        if (liga.getUsuarios().contains(usuario)) {
+            throw new IllegalStateException("Ya estás unido a esta liga.");
+        }
+
+        if (liga.getUsuarios().size() >= liga.getMaxUsuarios()) {
+            throw new IllegalStateException("La liga ya está completa.");
+        }
+
+        liga.getUsuarios().add(usuario);
+        usuario.getLigas().add(liga);
+
+        ligaRepository.save(liga);
+        usuarioRepository.save(usuario);
+    }
+
 
 }
 

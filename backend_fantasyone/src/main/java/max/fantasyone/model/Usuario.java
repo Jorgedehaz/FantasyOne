@@ -32,6 +32,15 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApuestaVirtual> apuestas = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_liga",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "liga_id")
+    )
+    private List<Liga> ligas = new ArrayList<>();
+
+
     public Usuario() {
     }
 
@@ -103,5 +112,8 @@ public class Usuario {
         return "ADMIN".equalsIgnoreCase(this.rol);
     }
 
+    public List<Liga> getLigas() { return ligas; }
+
+    public void setLigas(List<Liga> ligas) { this.ligas = ligas; }
 }
 

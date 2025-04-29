@@ -36,6 +36,7 @@ export default function RegisterPage() {
                 nombre,
                 email,
                 password,
+                password2: repeatPassword,
                 esAdmin: false,
                 activo: true
             });

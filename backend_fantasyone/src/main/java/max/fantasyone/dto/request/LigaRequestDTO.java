@@ -4,6 +4,7 @@ public class LigaRequestDTO {
     private String nombre;
     private boolean privada;
     private String codigoAcceso;
+    private int maxUsuarios;
 
     public LigaRequestDTO() {}
 
@@ -29,5 +30,13 @@ public class LigaRequestDTO {
 
     public void setCodigoAcceso(String codigoAcceso) {
         this.codigoAcceso = codigoAcceso;
+    }
+
+    public int getMaxUsuarios() {
+        return maxUsuarios;
+    }
+
+    public void setMaxUsuarios(int maxUsuarios) {
+        this.maxUsuarios = maxUsuarios;
     }
 }

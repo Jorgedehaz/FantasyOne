@@ -1,6 +1,7 @@
 package max.fantasyone.service;
 
 import max.fantasyone.dto.request.RegistroRequestDTO;
+import max.fantasyone.model.Liga;
 import max.fantasyone.model.Usuario;
 import max.fantasyone.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +93,11 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-
-
+    // Usamos el metodo del repository que devuelve todas las ligas y volcamos en una lista las que sean privadas
+    public List<Liga> obtenerLigasPrivadas(Long usuarioId) {
+        return usuarioRepository.findLigasByUsuarioId(usuarioId).stream()
+                .filter(Liga::isPrivada)
+                .toList();
+    }
 }
 

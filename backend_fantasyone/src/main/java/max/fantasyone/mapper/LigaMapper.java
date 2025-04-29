@@ -12,12 +12,20 @@ public class LigaMapper {
         Liga liga = new Liga();
         liga.setNombre(dto.getNombre());
         liga.setPrivada(dto.isPrivada());
-        liga.setCodigoAcceso(dto.getCodigoAcceso());
+        liga.setCodigoAcceso(dto.getCodigoAcceso() != null ? dto.getCodigoAcceso() : ""); // asigna "" si es null. Quiza no es lo mejor pero crear 2 entities liga o 2 DTO no me tenia sentido
+        liga.setMaxUsuarios(dto.getMaxUsuarios());
         return liga;
     }
 
     public LigaResponseDTO toDTO(Liga liga) {
-        return new LigaResponseDTO(liga.getId(), liga.getNombre(), liga.isPrivada());
+        LigaResponseDTO dto = new LigaResponseDTO();
+        dto.setId(liga.getId());
+        dto.setNombre(liga.getNombre());
+        dto.setPrivada(liga.isPrivada());
+        dto.setMaxUsuarios(liga.getMaxUsuarios());
+        dto.setCodigoAcceso(liga.getCodigoAcceso() != null ? liga.getCodigoAcceso() : ""); // controlamos el null
+        return dto;
     }
+
 }
 

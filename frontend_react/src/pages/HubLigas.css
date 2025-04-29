@@ -1,0 +1,90 @@
+.hub-container {
+    background-color: #2E3336;
+    color: #FFFFFF;
+    min-height: 100vh;
+    padding: 40px;
+    text-align: center;
+}
+
+.hub-title {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.crear-liga-btn {
+    background-color: #D70000;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.listas-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.panel-ligas {
+    background-color: #1e2124;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.liga-item {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.unirse-btn, .completa-btn {
+    background-color: #D70000;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #1e2124;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    color: white;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cancelar-btn {
+    background: grey;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+}
