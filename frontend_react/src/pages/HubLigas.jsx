@@ -40,13 +40,19 @@ const HubLigas = () => {
 
     const handleUnirsePublica = async (ligaId) => {
         try {
-            await axios.post(`http://localhost:8080/api/ligas/${ligaId}/unirse?usuarioId=${usuarioId}`);
+            await axios.post(`http://localhost:8080/api/ligas/${ligaId}/unirse?usuarioId=${usuario.id}`);
             window.location.reload();
         } catch (error) {
             console.error(error);
             alert('Error al unirse a la liga.');
         }
     };
+
+    // Función para saber si el usuario ya está unido
+    const estaUnidoALiga = (ligaId) => {
+        return ligasPrivadas.some(liga => liga.id === ligaId);
+    };
+
 
     const ligasPublicasFiltradas = ligasPublicas.filter(liga => liga.nombre.toLowerCase().includes(filtroPublicas.toLowerCase()));
     const ligasPrivadasFiltradas = ligasPrivadas.filter(liga => liga.nombre.toLowerCase().includes(filtroPrivadas.toLowerCase()));
@@ -64,7 +70,13 @@ const HubLigas = () => {
                         <div key={liga.id} className="liga-item">
                             <span>{liga.nombre}</span>
                             {liga.maxUsuarios > 0 ? (
-                                <button className="unirse-btn" onClick={() => handleUnirsePublica(liga.id)}>Unirse</button>
+                                <button
+                                    onClick={() => handleUnirsePublica(liga.id)}
+                                    disabled={estaUnidoALiga(liga.id) || liga.usuarios?.length >= liga.maxUsuarios}
+                                    className={`boton-unirse ${estaUnidoALiga(liga.id) || liga.usuarios?.length >= liga.maxUsuarios ? 'boton-desactivado' : ''}`}
+                                >
+                                    {estaUnidoALiga(liga.id) ? 'Ya unido' : (liga.usuarios?.length >= liga.maxUsuarios ? 'Llena' : 'Unirse')}
+                                </button>
                             ) : (
                                 <button className="completa-btn" disabled>Completa</button>
                             )}

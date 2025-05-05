@@ -1,11 +1,15 @@
 package max.fantasyone.dto.response;
 
+import java.util.List;
+
 public class LigaResponseDTO {
     private Long id;
     private String nombre;
     private boolean privada;
     private int maxUsuarios;
     private String codigoAcceso;
+    private List<Long> usuariosIds; // uso lista porque asi puedo saber las ids y cantidad con el length()
+
 
     public LigaResponseDTO() {
     }
@@ -56,5 +60,13 @@ public class LigaResponseDTO {
 
     public void setCodigoAcceso(String codigoAcceso) {
         this.codigoAcceso = codigoAcceso;
+    }
+
+    public List<Long> getUsuariosIds() {
+        return usuariosIds;
+    }
+
+    public void setUsuariosIds(List<Long> usuariosIds) {
+        this.usuariosIds = usuariosIds;
     }
 }

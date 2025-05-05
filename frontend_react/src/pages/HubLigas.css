@@ -1,6 +1,6 @@
 .hub-container {
     background-color: #2E3336;
-    color: #FFFFFF;
+    color: grey;
     min-height: 100vh;
     padding: 40px;
     text-align: center;
@@ -71,7 +71,7 @@ input[type="text"], input[type="number"] {
     padding: 30px;
     border-radius: 10px;
     width: 400px;
-    color: white;
+    color: grey;
 }
 
 .modal-buttons {

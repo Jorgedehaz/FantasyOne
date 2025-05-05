@@ -3,7 +3,10 @@ package max.fantasyone.mapper;
 import max.fantasyone.dto.request.LigaRequestDTO;
 import max.fantasyone.dto.response.LigaResponseDTO;
 import max.fantasyone.model.Liga;
+import max.fantasyone.model.Usuario;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class LigaMapper {
@@ -24,6 +27,9 @@ public class LigaMapper {
         dto.setPrivada(liga.isPrivada());
         dto.setMaxUsuarios(liga.getMaxUsuarios());
         dto.setCodigoAcceso(liga.getCodigoAcceso() != null ? liga.getCodigoAcceso() : ""); // controlamos el null
+        dto.setUsuariosIds(liga.getUsuarios().stream()
+                        .map(Usuario::getId)
+                        .collect(Collectors.toList()));
         return dto;
     }
 
