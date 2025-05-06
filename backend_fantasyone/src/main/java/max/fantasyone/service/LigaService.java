@@ -35,9 +35,19 @@ public class LigaService {
         return ligaRepository.findByNombre(nombre);
     }
 
-    public Liga guardar(Liga liga) {
-        return ligaRepository.save(liga);
+    public Liga guardar(Liga liga, Long usuarioCreadorId) {
+        Usuario usuario = usuarioRepository.findById(usuarioCreadorId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario creador no encontrado"));
+
+        Liga ligaGuardada = ligaRepository.save(liga); // Primero se guarda la liga
+
+        ligaGuardada.getUsuarios().add(usuario);
+        usuario.getLigas().add(ligaGuardada);
+
+        usuarioRepository.save(usuario); // Luego se guarda la relación con el usuario
+        return ligaGuardada;
     }
+
 
     public void eliminar(Long id) {
         ligaRepository.deleteById(id);

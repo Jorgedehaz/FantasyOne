@@ -50,9 +50,9 @@ public class LigaController {
 
     // POST /api/ligas → crear una nueva liga
     @PostMapping
-    public ResponseEntity<LigaResponseDTO> crear(@RequestBody LigaRequestDTO dto) {
+    public ResponseEntity<LigaResponseDTO> crear(@RequestBody LigaRequestDTO dto, @RequestParam Long usuarioId) {
         Liga liga = ligaMapper.toEntity(dto);
-        Liga guardada = ligaService.guardar(liga);
+        Liga guardada = ligaService.guardar(liga, usuarioId);
         return ResponseEntity.status(HttpStatus.CREATED).body(ligaMapper.toDTO(guardada));
     }
 

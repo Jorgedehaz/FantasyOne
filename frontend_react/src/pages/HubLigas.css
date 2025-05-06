@@ -15,6 +15,7 @@
     background-color: #D70000;
     border: none;
     color: white;
+    border-radius: 0.5rem;
     padding: 10px 20px;
     margin-bottom: 30px;
     cursor: pointer;
@@ -40,6 +41,11 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.liga-item-clickable {
+    cursor: pointer;
+}
+
 
 .unirse-btn, .completa-btn {
     background-color: #D70000;
@@ -81,10 +87,43 @@ input[type="text"], input[type="number"] {
 }
 
 .cancelar-btn {
-    background: grey;
+    background-color: grey;
     border: none;
-    padding: 10px 20px;
-    cursor: pointer;
     color: white;
-    font-size: 14px;
+    border-radius: 0.5rem;
+    padding: 10px 20px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    font-size: 16px;
 }
+
+.btn-unirse {
+    background-color: #D70000;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-unido {
+    background-color: gray;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-llena {
+    background-color: gray;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+
