@@ -15,12 +15,14 @@ public class LigaService {
 
     private final LigaRepository ligaRepository;
     private final UsuarioRepository usuarioRepository;
+    private MercadoService mercadoService;
 
     // Si es necesario declaramos los repository necesarios y los incluimos en el constructor
     @Autowired
-    public LigaService(LigaRepository ligaRepository, UsuarioRepository usuarioRepository) {
+    public LigaService(LigaRepository ligaRepository, UsuarioRepository usuarioRepository, MercadoService mercadoService) {
         this.ligaRepository = ligaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.mercadoService = mercadoService;
     }
 
     public List<Liga> obtenerTodas() {
@@ -35,6 +37,7 @@ public class LigaService {
         return ligaRepository.findByNombre(nombre);
     }
 
+    //Guardar una liga y su creador
     public Liga guardar(Liga liga, Long usuarioCreadorId) {
         Usuario usuario = usuarioRepository.findById(usuarioCreadorId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario creador no encontrado"));
@@ -45,6 +48,10 @@ public class LigaService {
         usuario.getLigas().add(ligaGuardada);
 
         usuarioRepository.save(usuario); // Luego se guarda la relación con el usuario
+
+        // Crear mercado automáticamente para esta liga
+        mercadoService.generarMercadoInicial(liga);
+
         return ligaGuardada;
     }
 
@@ -53,10 +60,12 @@ public class LigaService {
         ligaRepository.deleteById(id);
     }
 
+    //Obtener ligas privadas
     public List<Liga> obtenerPorPrivacidad(boolean privada) {
         return ligaRepository.findByPrivada(privada);
     }
 
+    //unirse a una liga con la id de usuario
     public void unirseALiga(Long ligaId, Long usuarioId) {
         Liga liga = ligaRepository.findById(ligaId)
                 .orElseThrow(() -> new IllegalArgumentException("Liga no encontrada"));
@@ -79,6 +88,7 @@ public class LigaService {
         usuarioRepository.save(usuario);
     }
 
+    //Unirse a una liga privada con clave de acceso
     public void unirseALigaPrivada(String nombreLiga, String claveAcceso, Long usuarioId) {
         Liga liga = ligaRepository.findByNombre(nombreLiga)
                 .orElseThrow(() -> new IllegalArgumentException("Liga no encontrada"));

@@ -19,10 +19,9 @@ public class Mercado {
     @JoinColumn(name = "liga_id", nullable = false)
     private Liga liga;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "mercado_pilotos", joinColumns = @JoinColumn(name = "mercado_id"),
-            inverseJoinColumns = @JoinColumn(name = "piloto_id"))
-    private List<Piloto> pilotosDia = new ArrayList<>();
+    @OneToMany(mappedBy = "mercado", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PilotoMercado> pilotosMercado = new ArrayList<>();
+
 
     public Mercado() {
     }
@@ -43,12 +42,11 @@ public class Mercado {
         this.fecha = fecha;
     }
 
-    public List<Piloto> getPilotosDia() {
-        return pilotosDia;
+    public List<PilotoMercado> getPilotosMercado() {
+        return pilotosMercado;
     }
-
-    public void setPilotosDia(List<Piloto> pilotosDia) {
-        this.pilotosDia = pilotosDia;
+    public void setPilotosMercado(List<PilotoMercado> pilotosMercado) {
+        this.pilotosMercado = pilotosMercado;
     }
 
     public Liga getLiga() {

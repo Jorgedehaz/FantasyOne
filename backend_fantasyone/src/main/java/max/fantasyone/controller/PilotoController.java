@@ -51,6 +51,16 @@ public class PilotoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pilotoMapper.toDTO(guardado));
     }
 
+    // POST /api/pilotos/lote → crea varios pilotos a la vez desde una lista (futuro endpoit para beber de la API openf1.org)
+    @PostMapping("/lote")
+    public ResponseEntity<?> crearPilotosLote(@RequestBody List<PilotoRequestDTO> pilotosDto) {
+        for (PilotoRequestDTO dto : pilotosDto) {
+            pilotoService.guardar(dto);
+        }
+        return ResponseEntity.ok("Pilotos creados correctamente.");
+    }
+
+
     // GET /api/pilotos/{id} → consultar piloto por ID
     @GetMapping("/{id}")
     public ResponseEntity<PilotoResponseDTO> obtenerPorId(@PathVariable Long id) {

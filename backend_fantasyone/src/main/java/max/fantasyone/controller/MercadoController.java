@@ -4,6 +4,7 @@ import max.fantasyone.dto.request.MercadoRequestDTO;
 import max.fantasyone.dto.response.MercadoResponseDTO;
 import max.fantasyone.mapper.MercadoMapper;
 import max.fantasyone.model.Mercado;
+import max.fantasyone.model.Piloto;
 import max.fantasyone.service.MercadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/mercados")
@@ -74,4 +76,19 @@ public class MercadoController {
         mercadoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    // GET /api/mercado/liga/{ligaId} → obtener el mercado de una liga por su ID
+    @GetMapping("/liga/{ligaId}")
+    public ResponseEntity<MercadoResponseDTO> obtenerMercadoPorLiga(@PathVariable Long ligaId) {
+        Optional<Mercado> mercadoOpt = mercadoService.obtenerPorLigaId(ligaId);
+
+        if (mercadoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        MercadoResponseDTO dto = mercadoMapper.toDTO(mercadoOpt.get());
+        return ResponseEntity.ok(dto);
+    }
+
 }
