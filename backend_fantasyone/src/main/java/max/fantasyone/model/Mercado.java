@@ -20,7 +20,7 @@ public class Mercado {
     private Liga liga;
 
     @OneToMany(mappedBy = "mercado", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PilotoMercado> pilotosMercado = new ArrayList<>();
+    private List<Piloto> pilotosMercado = new ArrayList<>();
 
 
     public Mercado() {
@@ -42,10 +42,10 @@ public class Mercado {
         this.fecha = fecha;
     }
 
-    public List<PilotoMercado> getPilotosMercado() {
+    public List<Piloto> getPilotosMercado() {
         return pilotosMercado;
     }
-    public void setPilotosMercado(List<PilotoMercado> pilotosMercado) {
+    public void setPilotosMercado(List<Piloto> pilotosMercado) {
         this.pilotosMercado = pilotosMercado;
     }
 

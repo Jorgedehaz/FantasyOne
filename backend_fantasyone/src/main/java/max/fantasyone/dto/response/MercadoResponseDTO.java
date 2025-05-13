@@ -7,12 +7,12 @@ public class MercadoResponseDTO {
     private final Long id;
     private Long ligaId;
     private final LocalDate fecha;
-    private final List<String> nombresPilotos;
+    private final List<PilotoResponseDTO> pilotos;
 
-    public MercadoResponseDTO(Long id, LocalDate fecha, List<String> nombresPilotos, Long ligaId) {
+    public MercadoResponseDTO(Long id, LocalDate fecha, List<PilotoResponseDTO> pilotos, Long ligaId) {
         this.id = id;
         this.fecha = fecha;
-        this.nombresPilotos = nombresPilotos;
+        this.pilotos = pilotos;
         this.ligaId = ligaId;
     }
 
@@ -28,7 +28,7 @@ public class MercadoResponseDTO {
         return fecha;
     }
 
-    public List<String> getNombresPilotos() {
-        return nombresPilotos;
+    public List<PilotoResponseDTO> getPilotos() {
+        return pilotos;
     }
 }

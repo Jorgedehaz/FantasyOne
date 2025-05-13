@@ -2,26 +2,27 @@ package max.fantasyone.mapper;
 
 import max.fantasyone.dto.request.MercadoRequestDTO;
 import max.fantasyone.dto.response.MercadoResponseDTO;
+import max.fantasyone.dto.response.PilotoResponseDTO;
 import max.fantasyone.model.Liga;
 import max.fantasyone.model.Mercado;
-import max.fantasyone.model.Piloto;
-import max.fantasyone.model.PilotoMercado;
 import max.fantasyone.repository.LigaRepository;
 import max.fantasyone.repository.PilotoRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class MercadoMapper {
 
     private final PilotoRepository pilotoRepository;
     private final LigaRepository ligaRepository;
+    private final PilotoMapper pilotoMapper;
 
-    public MercadoMapper(PilotoRepository pilotoRepository, LigaRepository ligaRepository) {
+
+    public MercadoMapper(PilotoRepository pilotoRepository, LigaRepository ligaRepository, PilotoMapper pilotoMapper) {
         this.pilotoRepository = pilotoRepository;
         this.ligaRepository = ligaRepository;
+        this.pilotoMapper = pilotoMapper;
     }
 
     public Mercado toEntity(MercadoRequestDTO dto) {
@@ -36,14 +37,14 @@ public class MercadoMapper {
     }
 
     public MercadoResponseDTO toDTO(Mercado mercado) {
-        List<String> nombresPilotos = mercado.getPilotosMercado().stream()
-                .map(pm -> pm.getPiloto().getNombreCompleto())
+        List<PilotoResponseDTO> pilotosDTO = mercado.getPilotosMercado().stream()
+                .map(pilotoMapper::toDTO)
                 .toList();
 
         return new MercadoResponseDTO(
                 mercado.getId(),
                 mercado.getFecha(),
-                nombresPilotos,
+                pilotosDTO,
                 mercado.getLiga().getId()
         );
     }

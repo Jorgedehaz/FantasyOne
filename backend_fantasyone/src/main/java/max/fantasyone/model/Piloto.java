@@ -15,7 +15,6 @@ public class Piloto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id en la bd
                                    // Comentarios de ejemplo con lo que devuelve la API
-
     @Column(nullable = false)
     private String nombre;         // Max
 
@@ -51,6 +50,14 @@ public class Piloto {
 
     @OneToMany(mappedBy = "piloto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResultadoCarrera> resultados = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "liga_id")
+    private Liga liga;
+
+    @ManyToOne
+    @JoinColumn(name = "mercado_id")
+    private Mercado mercado;
 
     public Piloto() {
     }
@@ -157,5 +164,21 @@ public class Piloto {
 
     public void setResultados(List<ResultadoCarrera> resultados) {
         this.resultados = resultados;
+    }
+
+    public Liga getLiga() {
+        return liga;
+    }
+
+    public void setLiga(Liga liga) {
+        this.liga = liga;
+    }
+
+    public Mercado getMercado() {
+        return mercado;
+    }
+
+    public void setMercado(Mercado mercado) {
+        this.mercado = mercado;
     }
 }

@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface PilotoRepository extends JpaRepository<Piloto, Long> {
     Optional<Piloto> findByNombreCompleto(String nombreCompleto);
     List<Piloto> findByFichadoFalse();
+    List<Piloto> findByMercadoId(Long mercadoId);
 }
 

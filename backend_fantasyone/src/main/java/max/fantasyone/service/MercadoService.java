@@ -4,9 +4,7 @@ import jakarta.transaction.Transactional;
 import max.fantasyone.model.Liga;
 import max.fantasyone.model.Mercado;
 import max.fantasyone.model.Piloto;
-import max.fantasyone.model.PilotoMercado;
 import max.fantasyone.repository.MercadoRepository;
-import max.fantasyone.repository.PilotoMercadoRepository;
 import max.fantasyone.repository.PilotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +19,11 @@ public class MercadoService {
 
     private final MercadoRepository mercadoRepository;
     private final PilotoRepository pilotoRepository;
-    private final PilotoMercadoRepository pilotoMercadoRepository;
 
     @Autowired
-    public MercadoService(MercadoRepository mercadoRepository, PilotoRepository pilotoRepository, PilotoMercadoRepository pilotoMercadoRepository) {
+    public MercadoService(MercadoRepository mercadoRepository, PilotoRepository pilotoRepository) {
         this.mercadoRepository = mercadoRepository;
         this.pilotoRepository = pilotoRepository;
-        this.pilotoMercadoRepository = pilotoMercadoRepository;
     }
 
     public List<Mercado> obtenerTodos() {
@@ -52,7 +48,7 @@ public class MercadoService {
 
     @Transactional
     public void generarMercadoInicial(Liga liga) {
-        List<Piloto> disponibles = pilotoRepository.findByFichadoFalse();
+        List<Piloto> disponibles = pilotoRepository.findByFichadoFalse(); // asume que hay un campo "fichado"
         Collections.shuffle(disponibles);
 
         List<Piloto> seleccionados = disponibles.stream()
@@ -62,16 +58,25 @@ public class MercadoService {
         Mercado mercado = new Mercado();
         mercado.setFecha(LocalDate.now());
         mercado.setLiga(liga);
-        mercadoRepository.save(mercado);
+        mercado = mercadoRepository.save(mercado); // guardamos el mercado antes de asignarlo
 
         for (Piloto piloto : seleccionados) {
-            PilotoMercado pm = new PilotoMercado();
-            pm.setPiloto(piloto);
-            pm.setMercado(mercado);
-            pm.setFichado(false);
-            pilotoMercadoRepository.save(pm);
+            piloto.setMercado(mercado);   // nuevo campo en Piloto
+            piloto.setLiga(liga);         // nuevo campo en Piloto
+            piloto.setFichado(false);
+            pilotoRepository.save(piloto);
         }
     }
+
+    public List<Piloto> obtenerPilotosPorLiga(Long ligaId) {
+        Optional<Mercado> mercadoOpt = mercadoRepository.findByLigaId(ligaId);
+        if (mercadoOpt.isEmpty()) {
+            return List.of(); // lista vacía si no hay mercado
+        }
+        return pilotoRepository.findByMercadoId(mercadoOpt.get().getId());
+    }
+
+
 
     public Optional<Mercado> obtenerPorLigaId(Long ligaId) {
         return mercadoRepository.findByLigaId(ligaId);

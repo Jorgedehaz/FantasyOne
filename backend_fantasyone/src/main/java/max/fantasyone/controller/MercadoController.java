@@ -91,4 +91,12 @@ public class MercadoController {
         return ResponseEntity.ok(dto);
     }
 
+    // GET /api/mercado/liga/{ligaId}/pilotos → obtener pilotos de una liga
+    @GetMapping("/liga/{ligaId}/pilotos")
+    public ResponseEntity<List<Piloto>> obtenerPilotosPorLiga(@PathVariable Long ligaId) {
+        List<Piloto> pilotos = mercadoService.obtenerPilotosPorLiga(ligaId);
+        return ResponseEntity.ok(pilotos);
+    }
+
+
 }
