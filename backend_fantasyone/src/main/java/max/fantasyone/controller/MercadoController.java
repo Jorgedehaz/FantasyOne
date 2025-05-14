@@ -2,7 +2,9 @@ package max.fantasyone.controller;
 
 import max.fantasyone.dto.request.MercadoRequestDTO;
 import max.fantasyone.dto.response.MercadoResponseDTO;
+import max.fantasyone.dto.response.PilotoResponseDTO;
 import max.fantasyone.mapper.MercadoMapper;
+import max.fantasyone.mapper.PilotoMapper;
 import max.fantasyone.model.Mercado;
 import max.fantasyone.model.Piloto;
 import max.fantasyone.service.MercadoService;
@@ -22,11 +24,15 @@ public class MercadoController {
 
     private final MercadoService mercadoService;
     private final MercadoMapper mercadoMapper;
+    private final PilotoMapper pilotoMapper;  // inyectamos el mapper
 
     @Autowired
-    public MercadoController(MercadoService mercadoService, MercadoMapper mercadoMapper) {
+    public MercadoController(MercadoService mercadoService,
+                             MercadoMapper mercadoMapper,
+                             PilotoMapper pilotoMapper) {
         this.mercadoService = mercadoService;
         this.mercadoMapper = mercadoMapper;
+        this.pilotoMapper = pilotoMapper;
     }
 
     // GET /api/mercado → obtener todos los mercados
@@ -89,6 +95,24 @@ public class MercadoController {
 
         MercadoResponseDTO dto = mercadoMapper.toDTO(mercadoOpt.get());
         return ResponseEntity.ok(dto);
+    }
+
+
+    //GET /api/mercados/liga/{ligaId}/rotacion?limit=10
+    //Devuelve hasta `limit` pilotos aleatorios para fichar.
+    @GetMapping("/liga/{ligaId}/rotacion")
+    public ResponseEntity<List<PilotoResponseDTO>> obtenerRotacion(
+            @PathVariable Long ligaId,
+            @RequestParam(defaultValue = "10") int limit) {
+
+        List<Piloto> seleccionados = mercadoService
+                .obtenerPilotosParaMercado(ligaId, limit);
+
+        List<PilotoResponseDTO> dtoList = seleccionados.stream()
+                .map(pilotoMapper::toDTO)
+                .toList();
+
+        return ResponseEntity.ok(dtoList);
     }
 
     // GET /api/mercado/liga/{ligaId}/pilotos → obtener pilotos de una liga

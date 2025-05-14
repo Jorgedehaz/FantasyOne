@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -46,27 +47,41 @@ public class MercadoService {
         mercadoRepository.deleteById(id);
     }
 
+
+    //Nos va a dar la lista aleatoria de pilotos para el mercado , limitado a 10 por el controller
     @Transactional
-    public void generarMercadoInicial(Liga liga) {
-        List<Piloto> disponibles = pilotoRepository.findByFichadoFalse(); // asume que hay un campo "fichado"
-        Collections.shuffle(disponibles);
-
-        List<Piloto> seleccionados = disponibles.stream()
-                .limit(20)
+    public List<Piloto> obtenerPilotosParaMercado(Long ligaId, int limit) {
+        // 1) Traer todos los pilotos de esa liga
+        List<Piloto> pool = pilotoRepository.findByLigaId(ligaId);
+        // 2) Filtrar solo los que están libres
+        List<Piloto> libres = pool.stream()
+                .filter(p -> !p.isFichado())
                 .toList();
+        // 3) Mezclar y recortar al tamaño pedido
+        Collections.shuffle(libres);
+        return libres.stream()
+                .limit(limit)
+                .toList();
+    }
 
+     //Crea y guarda en BD el Mercado inicial para la liga:
+     // - PilotosMercado = los primeros `limit` seleccionados
+    @Transactional
+    public Mercado generarMercadoInicial(Liga liga, int limit) {
+        // crear mercado
         Mercado mercado = new Mercado();
         mercado.setFecha(LocalDate.now());
         mercado.setLiga(liga);
-        mercado = mercadoRepository.save(mercado); // guardamos el mercado antes de asignarlo
 
-        for (Piloto piloto : seleccionados) {
-            piloto.setMercado(mercado);   // nuevo campo en Piloto
-            piloto.setLiga(liga);         // nuevo campo en Piloto
-            piloto.setFichado(false);
-            pilotoRepository.save(piloto);
-        }
+        List<Piloto> seleccionados = obtenerPilotosParaMercado(liga.getId(), limit);
+
+        // Asignarles el mercado
+        seleccionados.forEach(p -> p.setMercado(mercado));
+        mercado.setPilotosMercado(seleccionados);
+
+        return mercadoRepository.save(mercado);
     }
+
 
     public List<Piloto> obtenerPilotosPorLiga(Long ligaId) {
         Optional<Mercado> mercadoOpt = mercadoRepository.findByLigaId(ligaId);
@@ -75,8 +90,6 @@ public class MercadoService {
         }
         return pilotoRepository.findByMercadoId(mercadoOpt.get().getId());
     }
-
-
 
     public Optional<Mercado> obtenerPorLigaId(Long ligaId) {
         return mercadoRepository.findByLigaId(ligaId);

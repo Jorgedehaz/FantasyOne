@@ -16,13 +16,15 @@ public class LigaService {
     private final LigaRepository ligaRepository;
     private final UsuarioRepository usuarioRepository;
     private MercadoService mercadoService;
+    private PilotoInitializerService piniService;
 
     // Si es necesario declaramos los repository necesarios y los incluimos en el constructor
     @Autowired
-    public LigaService(LigaRepository ligaRepository, UsuarioRepository usuarioRepository, MercadoService mercadoService) {
+    public LigaService(LigaRepository ligaRepository, UsuarioRepository usuarioRepository, MercadoService mercadoService, PilotoInitializerService piniService) {
         this.ligaRepository = ligaRepository;
         this.usuarioRepository = usuarioRepository;
         this.mercadoService = mercadoService;
+        this.piniService = piniService;
     }
 
     public List<Liga> obtenerTodas() {
@@ -50,7 +52,8 @@ public class LigaService {
         usuarioRepository.save(usuario); // Luego se guarda la relación con el usuario
 
         // Crear mercado automáticamente para esta liga
-        mercadoService.generarMercadoInicial(liga);
+        piniService.inicializarParaLiga(ligaGuardada);
+        mercadoService.generarMercadoInicial(ligaGuardada, 10);
 
         return ligaGuardada;
     }

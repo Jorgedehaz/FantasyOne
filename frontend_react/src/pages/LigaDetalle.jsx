@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import './LigaDetalle.css';
 
 const LigaDetalle = () => {
     const { id } = useParams();
     const [liga, setLiga] = useState(null);
     const [mercado, setMercado] = useState(null);
-    const [pilotos, setPilotos] = useState([]);
 
+    // Comprueba sesión al montar
     useEffect(() => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         if (!usuario) {
@@ -16,27 +16,21 @@ const LigaDetalle = () => {
             return;
         }
 
+        // Carga datos de la liga
         axios.get(`/api/ligas/${id}`)
             .then(response => setLiga(response.data))
-            .catch(error => {
-                console.error('Error cargando liga:', error);
-            });
-    }, [id]);
+            .catch(error => console.error('Error cargando liga:', error));
 
-    useEffect(() => {
-        axios.get(`/api/mercado/liga/${id}`)
-            .then(res => {
-                setMercado(res.data);
-                return axios.get(`/api/piloto-mercado/mercado/${res.data.id}`);
-            })
-            .then(res => setPilotos(res.data))
-            .catch(err => console.error("Error cargando mercado o pilotos:", err));
+        // Carga mercado actual con pilotos incluidos
+        axios.get(`/api/mercados/liga/${id}`)
+            .then(res => setMercado(res.data))
+            .catch(err => console.error('Error cargando mercado:', err));
     }, [id]);
 
     if (!liga) return <p>Cargando liga...</p>;
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div className="liga-detalle-container">
             <h2>Detalles de la Liga</h2>
             <p><strong>Nombre:</strong> {liga.nombre}</p>
             <p><strong>Privada:</strong> {liga.privada ? 'Sí' : 'No'}</p>
@@ -44,18 +38,27 @@ const LigaDetalle = () => {
             <p><strong>Jugadores actuales:</strong> {liga.usuariosId.length}</p>
 
             <h3>Mercado actual</h3>
-            <p><strong>Fecha:</strong> {mercado?.fecha}</p>
+            <p><strong>Fecha:</strong> {mercado?.fecha || '—'}</p>
 
-            {pilotos.length === 0 ? (
-                <p>No hay pilotos disponibles en el mercado actualmente.</p>
-            ) : (
-                <ul>
-                    {pilotos.map(piloto => (
-                        <li key={piloto.id}>
-                            {piloto.nombrePiloto} - Precio: {piloto.precio} € {piloto.fichado ? "(Fichado)" : ""}
+            {mercado?.pilotos && mercado.pilotos.length > 0 ? (
+                <ul className="pilotos-lista">
+                    {mercado.pilotos.map(piloto => (
+                        <li key={piloto.id} className="piloto-item">
+                            <img
+                                src={piloto.imagenUrl}
+                                alt={piloto.nombreCompleto}
+                                className="piloto-imagen"
+                            />
+                            <div className="piloto-datos">
+                                <span className="piloto-nombre">{piloto.nombreCompleto}</span>
+                                <span className="piloto-precio">{piloto.precio} €</span>
+                                {piloto.fichado && <span className="piloto-fichado">(Fichado)</span>}
+                            </div>
                         </li>
                     ))}
                 </ul>
+            ) : (
+                <p>No hay pilotos disponibles en el mercado actualmente.</p>
             )}
         </div>
     );

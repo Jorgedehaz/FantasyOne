@@ -59,6 +59,8 @@ public class Piloto {
     @JoinColumn(name = "mercado_id")
     private Mercado mercado;
 
+    private String externalId;
+
     public Piloto() {
     }
 
@@ -180,5 +182,13 @@ public class Piloto {
 
     public void setMercado(Mercado mercado) {
         this.mercado = mercado;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 }
