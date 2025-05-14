@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MercadoService {
@@ -56,12 +57,11 @@ public class MercadoService {
         // 2) Filtrar solo los que están libres
         List<Piloto> libres = pool.stream()
                 .filter(p -> !p.isFichado())
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
         // 3) Mezclar y recortar al tamaño pedido
         Collections.shuffle(libres);
-        return libres.stream()
-                .limit(limit)
-                .toList();
+
+        return libres.stream().limit(limit).toList();
     }
 
      //Crea y guarda en BD el Mercado inicial para la liga:

@@ -30,7 +30,7 @@ public class PilotoInitializerService {
     @Transactional
     public void inicializarParaLiga(Liga liga) {
         // 1) Crea el recurso sobre el classpath
-        ClassPathResource resource = new ClassPathResource("pilotos-default.json");
+        ClassPathResource resource = new ClassPathResource("pilotos.json");
         try (InputStream is = resource.getInputStream()) {
             // 2) Lee directamente la lista de Piloto
             List<Piloto> pilotos = mapper.readValue(

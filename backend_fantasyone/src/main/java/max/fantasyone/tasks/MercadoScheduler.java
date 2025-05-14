@@ -25,10 +25,10 @@ public class MercadoScheduler {
 
     //Cada día a las 8:00AM (horario de Madrid) generamos un nuevo mercado para todas las ligas
     @Scheduled(cron = "0 0 8 * * *", zone = "Europe/Madrid")
-    public void rotarMercadosDiarios(@RequestParam(defaultValue = "10") int limit) {
+    public void rotarMercadosDiarios() {
         List<Liga> ligas = ligaRepository.findAll();
         for (Liga liga : ligas) {
-            mercadoService.generarMercadoInicial(liga,limit);
+            mercadoService.generarMercadoInicial(liga,10);
         }
     }
 }
