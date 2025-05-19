@@ -26,7 +26,7 @@ public class PilotoMapper {
     }
 
 
-    public PilotoResponseDTO toDTO(Piloto piloto) {
+    public static PilotoResponseDTO toDTO(Piloto piloto) {
         return new PilotoResponseDTO(piloto);
     }
 }

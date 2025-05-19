@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/equipos")
@@ -27,65 +28,43 @@ public class EquipoUsuarioController {
         this.equipoUsuarioMapper = equipoUsuarioMapper;
     }
 
-    // GET /api/equipos → obtener todos los equipos
-    @GetMapping
-    public List<EquipoUsuarioResponseDTO> obtenerTodos() {
-        return equipoUsuarioService.obtenerTodos()
-                .stream()
-                .map(equipoUsuarioMapper::toDTO)
-                .toList();
-    }
 
-    // GET /api/equipos/usuario/{usuarioId} → equipos por usuario
-    @GetMapping("/usuario/{usuarioId}")
-    public List<EquipoUsuarioResponseDTO> obtenerPorUsuario(@PathVariable Long usuarioId) {
-        return equipoUsuarioService.buscarPorUsuario(usuarioId)
-                .stream()
-                .map(equipoUsuarioMapper::toDTO)
-                .toList();
-    }
-
-    // GET /api/equipos/liga/{ligaId} → equipos en una liga
-    @GetMapping("/liga/{ligaId}")
-    public List<EquipoUsuarioResponseDTO> obtenerPorLiga(@PathVariable Long ligaId) {
-        return equipoUsuarioService.buscarPorLiga(ligaId)
-                .stream()
-                .map(equipoUsuarioMapper::toDTO)
-                .toList();
-    }
-
-    // GET /api/equipos/usuario/{usuarioId}/liga/{ligaId}
-    @GetMapping("/usuario/{usuarioId}/liga/{ligaId}")
-    public ResponseEntity<EquipoUsuarioResponseDTO> obtenerPorUsuarioYLiga(@PathVariable Long usuarioId, @PathVariable Long ligaId) {
-        return equipoUsuarioService.buscarPorUsuarioYLiga(usuarioId, ligaId)
-                .map(equipoUsuarioMapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // POST /api/equipos
+    //POST /api/equipos -> Crea un nuevo equipo para un usuario en una liga.
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody EquipoUsuarioRequestDTO dto) {
-        // Validar si ya existe equipo para usuario + liga
-        Optional<EquipoUsuario> existente = equipoUsuarioService.buscarPorUsuarioYLiga(
-                dto.getUsuarioId(), dto.getLigaId());
-
-        if (existente.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ya existe un equipo en esa liga para ese usuario.");
-        }
-
-        EquipoUsuario equipo = equipoUsuarioMapper.toEntity(dto);
-        EquipoUsuario guardado = equipoUsuarioService.guardar(equipo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(equipoUsuarioMapper.toDTO(guardado));
+    public ResponseEntity<EquipoUsuarioResponseDTO> crearEquipo(@RequestBody EquipoUsuarioRequestDTO dto) {
+        EquipoUsuario equipo = equipoUsuarioService.crearEquipo(dto);
+        EquipoUsuarioResponseDTO response = equipoUsuarioMapper.toDTO(equipo);
+        return ResponseEntity.ok(response);
     }
 
-    // DELETE /api/equipos/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (equipoUsuarioService.obtenerPorId(id).isEmpty()) {
+    //GET /api/equipos/usuario/{usuarioId}/liga/{ligaId} → Obtiene el equipo del usuario en esa liga.
+    @GetMapping("/usuario/{usuarioId}/liga/{ligaId}")
+    public ResponseEntity<EquipoUsuarioResponseDTO> obtenerEquipo(@PathVariable Long usuarioId,
+                                                                  @PathVariable Long ligaId) {
+        EquipoUsuario equipo = equipoUsuarioService.buscarPorUsuarioYLiga(usuarioId, ligaId);
+        if (equipo == null) {
             return ResponseEntity.notFound().build();
         }
-        equipoUsuarioService.eliminar(id);
-        return ResponseEntity.noContent().build();
+        EquipoUsuarioResponseDTO response = equipoUsuarioMapper.toDTO(equipo);
+        return ResponseEntity.ok(response);
+    }
+
+    //POST /api/equipos/{equipoId}/fichar?pilotoId={} → Ficha piloto y devuelve el equipo actualizado.
+    @PostMapping("/{equipoId}/fichar")
+    public ResponseEntity<EquipoUsuarioResponseDTO> ficharPiloto(@PathVariable Long equipoId,
+                                                                 @RequestParam Long pilotoId) {
+        EquipoUsuario equipo = equipoUsuarioService.ficharPiloto(equipoId, pilotoId);
+        EquipoUsuarioResponseDTO response = equipoUsuarioMapper.toDTO(equipo);
+        return ResponseEntity.ok(response);
+    }
+
+    //GET /api/equipos/clasificacion/{ligaId} → Devuelve la lista ordenada de equipos (clasificación)
+    @GetMapping("/clasificacion/{ligaId}")
+    public ResponseEntity<List<EquipoUsuarioResponseDTO>> getClasificacion(@PathVariable Long ligaId) {
+        List<EquipoUsuario> clasificacion = equipoUsuarioService.calcularClasificacion(ligaId);
+        List<EquipoUsuarioResponseDTO> dtoList = clasificacion.stream()
+                .map(equipoUsuarioMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtoList);
     }
 }

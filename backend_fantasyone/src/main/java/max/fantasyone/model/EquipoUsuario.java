@@ -1,6 +1,11 @@
 package max.fantasyone.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class EquipoUsuario {
@@ -16,19 +21,27 @@ public class EquipoUsuario {
     @JoinColumn(name = "liga_id", nullable = false)
     private Liga liga;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "piloto1_id", nullable = false)
-    private Piloto piloto1;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "piloto2_id", nullable = false)
-    private Piloto piloto2;
+    /**
+     * Lista de pilotos fichados para este equipo.
+     * Tamaño máximo 2 pilotos.
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "equipo_pilotos",
+            joinColumns = @JoinColumn(name = "equipo_id"),
+            inverseJoinColumns = @JoinColumn(name = "piloto_id")
+    )
+    @Size(max = 2, message = "Un equipo no puede tener más de 2 pilotos")
+    private List<Piloto> pilotos = new ArrayList<>();
 
     @Column(nullable = false)
-    private double monedas;
+    private double monedas;  // presupuesto restante
 
     @Column(nullable = false)
     private int puntosAcumulados;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creacion = LocalDateTime.now();
 
     public EquipoUsuario() {
     }
@@ -57,20 +70,12 @@ public class EquipoUsuario {
         this.liga = liga;
     }
 
-    public Piloto getPiloto1() {
-        return piloto1;
+    public List<Piloto> getPilotos() {
+        return pilotos;
     }
 
-    public void setPiloto1(Piloto piloto1) {
-        this.piloto1 = piloto1;
-    }
-
-    public Piloto getPiloto2() {
-        return piloto2;
-    }
-
-    public void setPiloto2(Piloto piloto2) {
-        this.piloto2 = piloto2;
+    public void setPilotos(List<Piloto> pilotos) {
+        this.pilotos = pilotos;
     }
 
     public double getMonedas() {
@@ -87,5 +92,24 @@ public class EquipoUsuario {
 
     public void setPuntosAcumulados(int puntosAcumulados) {
         this.puntosAcumulados = puntosAcumulados;
+    }
+
+    public LocalDateTime getCreacion() {
+        return creacion;
+    }
+
+    public void setCreacion(LocalDateTime creacion) {
+        this.creacion = creacion;
+    }
+
+    public void ficharPiloto(Piloto p) {
+        if (pilotos.size() >= 2) {
+            throw new IllegalStateException("Ya tienes 2 pilotos fichados");
+        }
+        if (monedas < p.getPrecio()) {
+            throw new IllegalStateException("Presupuesto insuficiente");
+        }
+        pilotos.add(p);
+        monedas -= p.getPrecio();
     }
 }

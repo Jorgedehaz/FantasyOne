@@ -2,6 +2,7 @@ package max.fantasyone.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class ResultadoCarrera {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "carrera_id", nullable = false)
     private Carrera carrera;
+
+    @Column(nullable = false)
+    private LocalDateTime momento;  // nuevo: timestamp del resultado para medir a partir de cuando puntua para un equipo
 
     @Column(nullable = false)
     private int posicionFinal;
@@ -72,6 +76,14 @@ public class ResultadoCarrera {
 
     public void setCarrera(Carrera carrera) {
         this.carrera = carrera;
+    }
+
+    public LocalDateTime getMomento() {
+        return momento;
+    }
+
+    public void setMomento(LocalDateTime momento) {
+        this.momento = momento;
     }
 
     public int getPosicionFinal() {

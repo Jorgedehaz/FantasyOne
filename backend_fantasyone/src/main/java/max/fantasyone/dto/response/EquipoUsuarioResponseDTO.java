@@ -1,52 +1,63 @@
 package max.fantasyone.dto.response;
 
-public class EquipoUsuarioResponseDTO {
-    private final Long id;
-    private final String nombreUsuario;
-    private final String nombreLiga;
-    private final String nombrePiloto1;
-    private final String nombrePiloto2;
-    private final double monedas;
-    private final int puntosAcumulados;
+import java.util.List;
 
-    public EquipoUsuarioResponseDTO(Long id, String nombreUsuario, String nombreLiga,
-                                    String nombrePiloto1, String nombrePiloto2,
-                                    double monedas, int puntosAcumulados) {
-        this.id = id;
-        this.nombreUsuario = nombreUsuario;
-        this.nombreLiga = nombreLiga;
-        this.nombrePiloto1 = nombrePiloto1;
-        this.nombrePiloto2 = nombrePiloto2;
-        this.monedas = monedas;
-        this.puntosAcumulados = puntosAcumulados;
-    }
+public class EquipoUsuarioResponseDTO {
+    private Long id;
+    private String nombreUsuario;
+    private String nombreLiga;
+    private List<PilotoResponseDTO> pilotos;
+    private double monedas;
+    private int puntosAcumulados;
+
+    public EquipoUsuarioResponseDTO() {}
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombreUsuario() {
         return nombreUsuario;
     }
 
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
     public String getNombreLiga() {
         return nombreLiga;
     }
 
-    public String getNombrePiloto1() {
-        return nombrePiloto1;
+    public void setNombreLiga(String nombreLiga) {
+        this.nombreLiga = nombreLiga;
     }
 
-    public String getNombrePiloto2() {
-        return nombrePiloto2;
+    public List<PilotoResponseDTO> getPilotos() {
+        return pilotos;
+    }
+
+    public void setPilotos(List<PilotoResponseDTO> pilotos) {
+        this.pilotos = pilotos;
     }
 
     public double getMonedas() {
         return monedas;
     }
 
+    public void setMonedas(double monedas) {
+        this.monedas = monedas;
+    }
+
     public int getPuntosAcumulados() {
         return puntosAcumulados;
+    }
+
+    public void setPuntosAcumulados(int puntosAcumulados) {
+        this.puntosAcumulados = puntosAcumulados;
     }
 }
 

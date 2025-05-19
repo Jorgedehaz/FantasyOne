@@ -1,13 +1,17 @@
 package max.fantasyone.dto.request;
 
 
+import jakarta.validation.constraints.Size;
+import java.util.List;
+
 public class EquipoUsuarioRequestDTO {
     private Long usuarioId;
     private Long ligaId;
-    private Long piloto1Id;
-    private Long piloto2Id;
+
+    @Size(max = 2, message = "Un equipo no puede tener más de 2 pilotos")
+    private List<Long> pilotoIds;
+
     private double monedas;
-    private int puntosAcumulados;
 
     public EquipoUsuarioRequestDTO() {}
 
@@ -27,20 +31,12 @@ public class EquipoUsuarioRequestDTO {
         this.ligaId = ligaId;
     }
 
-    public Long getPiloto1Id() {
-        return piloto1Id;
+    public List<Long> getPilotoIds() {
+        return pilotoIds;
     }
 
-    public void setPiloto1Id(Long piloto1Id) {
-        this.piloto1Id = piloto1Id;
-    }
-
-    public Long getPiloto2Id() {
-        return piloto2Id;
-    }
-
-    public void setPiloto2Id(Long piloto2Id) {
-        this.piloto2Id = piloto2Id;
+    public void setPilotoIds(List<Long> pilotoIds) {
+        this.pilotoIds = pilotoIds;
     }
 
     public double getMonedas() {
@@ -49,14 +45,6 @@ public class EquipoUsuarioRequestDTO {
 
     public void setMonedas(double monedas) {
         this.monedas = monedas;
-    }
-
-    public int getPuntosAcumulados() {
-        return puntosAcumulados;
-    }
-
-    public void setPuntosAcumulados(int puntosAcumulados) {
-        this.puntosAcumulados = puntosAcumulados;
     }
 }
 
