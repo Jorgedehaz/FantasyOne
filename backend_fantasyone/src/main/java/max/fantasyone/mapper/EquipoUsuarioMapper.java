@@ -23,6 +23,8 @@ public class EquipoUsuarioMapper {
     private LigaRepository ligaRepository;
     @Autowired
     private PilotoRepository pilotoRepository;
+    @Autowired
+    private PilotoMapper pilotoMapper;
 
 
     //Convierte un DTO de petición en la entidad EquipoUsuario.
@@ -40,8 +42,7 @@ public class EquipoUsuarioMapper {
         equipo.setMonedas(dto.getMonedas());
 
         // Mapear lista de IDs a entity Piloto
-        List<Piloto> pilotos = dto.getPilotoIds().stream()
-                .map(id -> pilotoRepository.findById(id)
+        List<Piloto> pilotos = dto.getPilotoIds().stream().map(id -> pilotoRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("Piloto no encontrado: " + id)))
                 .collect(Collectors.toList());
         equipo.setPilotos(pilotos);
@@ -58,11 +59,11 @@ public class EquipoUsuarioMapper {
         dto.setMonedas(equipo.getMonedas());
         dto.setPuntosAcumulados(equipo.getPuntosAcumulados());
 
-        // Mapear lista de Piloto a PilotoResponseDTO
-        List<PilotoResponseDTO> pilotosDto = equipo.getPilotos().stream()
-                .map(p -> PilotoMapper.toDTO(p))
+        // Mapear lista de Piloto a PilotoResponseDTO usando instancia inyectada
+        List<?> pilotosDto = equipo.getPilotos().stream()
+                .map(p -> pilotoMapper.toDTO(p))
                 .collect(Collectors.toList());
-        dto.setPilotos(pilotosDto);
+        dto.setPilotos((List) pilotosDto);
 
         return dto;
     }
