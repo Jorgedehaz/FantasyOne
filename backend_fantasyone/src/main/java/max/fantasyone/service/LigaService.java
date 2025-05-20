@@ -1,5 +1,9 @@
 package max.fantasyone.service;
 
+import max.fantasyone.dto.request.EquipoUsuarioRequestDTO;
+import max.fantasyone.dto.response.EquipoUsuarioResponseDTO;
+import max.fantasyone.mapper.EquipoUsuarioMapper;
+import max.fantasyone.model.EquipoUsuario;
 import max.fantasyone.model.Liga;
 import max.fantasyone.model.Usuario;
 import max.fantasyone.repository.LigaRepository;
@@ -7,6 +11,7 @@ import max.fantasyone.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,14 +22,20 @@ public class LigaService {
     private final UsuarioRepository usuarioRepository;
     private MercadoService mercadoService;
     private PilotoInitializerService piniService;
+    private final EquipoUsuarioService equipoUsuarioService;
+    private final EquipoUsuarioMapper equipoUsuarioMapper;
 
     // Si es necesario declaramos los repository necesarios y los incluimos en el constructor
     @Autowired
-    public LigaService(LigaRepository ligaRepository, UsuarioRepository usuarioRepository, MercadoService mercadoService, PilotoInitializerService piniService) {
+    public LigaService(LigaRepository ligaRepository, UsuarioRepository usuarioRepository, MercadoService mercadoService, PilotoInitializerService piniService,
+                       EquipoUsuarioService equipoUsuarioService,
+                       EquipoUsuarioMapper equipoUsuarioMapper) {
         this.ligaRepository = ligaRepository;
         this.usuarioRepository = usuarioRepository;
         this.mercadoService = mercadoService;
         this.piniService = piniService;
+        this.equipoUsuarioService = equipoUsuarioService;
+        this.equipoUsuarioMapper = equipoUsuarioMapper;
     }
 
     public List<Liga> obtenerTodas() {
@@ -69,7 +80,7 @@ public class LigaService {
     }
 
     //unirse a una liga con la id de usuario
-    public void unirseALiga(Long ligaId, Long usuarioId) {
+    public EquipoUsuarioResponseDTO unirseALiga(Long ligaId, Long usuarioId) {
         Liga liga = ligaRepository.findById(ligaId)
                 .orElseThrow(() -> new IllegalArgumentException("Liga no encontrada"));
 
@@ -89,39 +100,23 @@ public class LigaService {
 
         ligaRepository.save(liga); // guarda también la relación entre el usuario y la liga a la que se une
         usuarioRepository.save(usuario);
+
+        // Crear equipo para el usuario en esta liga
+        EquipoUsuarioRequestDTO dto = new EquipoUsuarioRequestDTO();
+        dto.setUsuarioId(usuarioId);
+        dto.setLigaId(ligaId);
+        dto.setPilotoIds(Collections.emptyList());
+        EquipoUsuario equipo = equipoUsuarioService.crearEquipo(dto);
+
+        return equipoUsuarioMapper.toDTO(equipo);
     }
 
     //Unirse a una liga privada con clave de acceso
-    public void unirseALigaPrivada(String nombreLiga, String claveAcceso, Long usuarioId) {
-        Liga liga = ligaRepository.findByNombre(nombreLiga)
-                .orElseThrow(() -> new IllegalArgumentException("Liga no encontrada"));
-
-        // Hay que comprobar si es privada
-        if (!liga.isPrivada()) {
-            throw new IllegalStateException("La liga no es privada.");
-        }
-
-        // Y ver si la clave es correcta
-        if (!liga.getCodigoAcceso().equals(claveAcceso)) {
-            throw new IllegalArgumentException("Clave de acceso incorrecta.");
-        }
-
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
-        if (liga.getUsuarios().contains(usuario)) {
-            throw new IllegalStateException("Ya estás unido a esta liga.");
-        }
-
-        if (liga.getUsuarios().size() >= liga.getMaxUsuarios()) {
-            throw new IllegalStateException("La liga ya está completa.");
-        }
-
-        liga.getUsuarios().add(usuario);
-        usuario.getLigas().add(liga);
-
-        ligaRepository.save(liga);
-        usuarioRepository.save(usuario);
+    public EquipoUsuarioResponseDTO unirseALigaPrivada(String nombreLiga, String claveAcceso, Long usuarioId) {
+        Liga liga = ligaRepository.findByNombreAndCodigoAcceso(nombreLiga, claveAcceso)
+                .orElseThrow(() -> new IllegalArgumentException("Nombre de liga o clave incorrectos"));
+        // Reutiliza el método unirseALiga
+        return unirseALiga(liga.getId(), usuarioId);
     }
 
 

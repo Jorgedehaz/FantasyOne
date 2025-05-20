@@ -3,6 +3,7 @@ package max.fantasyone.controller;
 import max.fantasyone.dto.request.LigaRequestDTO;
 import max.fantasyone.dto.request.UnirseLigaPrivadaRequestDTO;
 import max.fantasyone.dto.request.UnirseLigaRequestDTO;
+import max.fantasyone.dto.response.EquipoUsuarioResponseDTO;
 import max.fantasyone.dto.response.LigaResponseDTO;
 import max.fantasyone.mapper.LigaMapper;
 import max.fantasyone.model.Liga;
@@ -86,23 +87,31 @@ public class LigaController {
 
     // POST /api/ligas/{id}/unirse → unirse a una liga por su ID
     @PostMapping("/{id}/unirse")
-    public ResponseEntity<String> unirseALiga(@PathVariable Long id, @RequestBody UnirseLigaRequestDTO request) {
+    public ResponseEntity<?> unirseALiga(@PathVariable Long id, @RequestBody UnirseLigaRequestDTO request) {
         try {
-            ligaService.unirseALiga(id, request.getUsuarioId());
-            return ResponseEntity.ok("Te has unido a la liga correctamente.");
+            // unirseALiga ahora devuelve el DTO de equipo
+            EquipoUsuarioResponseDTO equipoDto = ligaService.unirseALiga(id, request.getUsuarioId());
+            return ResponseEntity.ok(equipoDto);
         } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
     }
 
     // POST /api/ligas/unirsePrivada → unirse a una liga privada usando nombre y clave
     @PostMapping("/unirsePrivada")
-    public ResponseEntity<String> unirseALigaPrivada(@RequestBody UnirseLigaPrivadaRequestDTO request) {
+    public ResponseEntity<?> unirseALigaPrivada(@RequestBody UnirseLigaPrivadaRequestDTO request) {
         try {
-            ligaService.unirseALigaPrivada(request.getNombreLiga(), request.getClaveAcceso(), request.getUsuarioId());
-            return ResponseEntity.ok("Te has unido a la liga privada correctamente.");
+            EquipoUsuarioResponseDTO equipoDto = ligaService.unirseALigaPrivada(
+                            request.getNombreLiga(),
+                            request.getClaveAcceso(),
+                            request.getUsuarioId());
+            return ResponseEntity.ok(equipoDto);
         } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
     }
 

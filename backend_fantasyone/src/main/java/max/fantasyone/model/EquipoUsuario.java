@@ -38,10 +38,10 @@ public class EquipoUsuario {
     private double monedas;  // presupuesto restante
 
     @Column(nullable = false)
-    private int puntosAcumulados;
+    private int puntosAcumulados = 0; // Inicializado en 0
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime creacion = LocalDateTime.now();
+    private LocalDateTime creacion = LocalDateTime.now(); // Fecha de creacion que no vamos a actualizar a posteriori
 
     public EquipoUsuario() {
     }

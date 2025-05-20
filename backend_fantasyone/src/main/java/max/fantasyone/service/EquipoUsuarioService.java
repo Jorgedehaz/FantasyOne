@@ -25,6 +25,8 @@ public class EquipoUsuarioService {
     private final ResultadoCarreraRepository resultadoCarreraRepository;
     private final EquipoUsuarioMapper equipoUsuarioMapper;
 
+    private static final double PRESUPUESTO_INICIAL = 200.0;
+
     @Autowired
     public EquipoUsuarioService(EquipoUsuarioRepository equipoUsuarioRepository,
                                 PilotoRepository pilotoRepository,
@@ -40,6 +42,10 @@ public class EquipoUsuarioService {
     public EquipoUsuario crearEquipo(EquipoUsuarioRequestDTO dto) {
         EquipoUsuario equipo = equipoUsuarioMapper.toEntity(dto);
         // Inicializar puntos y fecha de creación se maneja en la entidad
+
+        // Fija el presupuesto inicial en la constante
+        equipo.setMonedas(PRESUPUESTO_INICIAL);
+
         return equipoUsuarioRepository.save(equipo);
     }
 

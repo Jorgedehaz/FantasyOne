@@ -60,20 +60,30 @@ const LigaDetalle = () => {
                     <section className="seccion equipo-section">
                         <h3>Mi Equipo</h3>
                         {equipo ? (
-                            <ul className="equipo-lista">
-                                {equipo.pilotos.map((p) => (
-                                    <li key={p.id} className="equipo-piloto-item">
-                                        <img src={p.imagenUrl} alt={p.nombreCompleto} className="equipo-piloto-img" />
-                                        <div>
-                                            <span>{p.nombreCompleto}</span>
-                                            <span>{p.precio} €</span>
-                                        </div>
-                                    </li>
-                                ))}
-                                {equipo.pilotos.length === 0 && (
-                                    <li>No tienes pilotos fichados aún.</li>
-                                )}
-                            </ul>
+                            <>
+                                <div className="equipo-resumen">
+                                    <p><strong>Presupuesto:</strong> {equipo.monedas} €</p>
+                                    <p><strong>Puntos:</strong> {equipo.puntosAcumulados}</p>
+                                </div>
+                                <ul className="equipo-lista">
+                                    {equipo.pilotos.map((p) => (
+                                        <li key={p.id} className="equipo-piloto-item">
+                                            <img
+                                                src={p.imagenUrl}
+                                                alt={p.nombreCompleto}
+                                                className="equipo-piloto-img"
+                                            />
+                                            <div>
+                                                <span>{p.nombreCompleto}</span>
+                                                <span>{p.precio} €</span>
+                                            </div>
+                                        </li>
+                                    ))}
+                                    {equipo.pilotos.length === 0 && (
+                                        <li>No tienes pilotos fichados aún.</li>
+                                    )}
+                                </ul>
+                            </>
                         ) : (
                             <p>Cargando equipo…</p>
                         )}
@@ -92,7 +102,10 @@ const LigaDetalle = () => {
                                 </thead>
                                 <tbody>
                                 {clasificacion.map((e, idx) => (
-                                    <tr key={e.id} className={e.id === equipo?.id ? 'mi-equipo-fila' : ''}>
+                                    <tr
+                                        key={e.id}
+                                        className={e.id === equipo?.id ? 'mi-equipo-fila' : ''}
+                                    >
                                         <td>{idx + 1}</td>
                                         <td>{e.nombreUsuario}</td>
                                         <td>{e.puntosAcumulados}</td>
@@ -115,7 +128,11 @@ const LigaDetalle = () => {
                             <ul className="pilotos-lista">
                                 {mercado.pilotos.map((p) => (
                                     <li key={p.id} className="piloto-item">
-                                        <img src={p.imagenUrl} alt={p.nombreCompleto} className="piloto-imagen" />
+                                        <img
+                                            src={p.imagenUrl}
+                                            alt={p.nombreCompleto}
+                                            className="piloto-imagen"
+                                        />
                                         <div className="piloto-datos">
                                             <span className="piloto-nombre">{p.nombreCompleto}</span>
                                             <span className="piloto-precio">{p.precio} €</span>
