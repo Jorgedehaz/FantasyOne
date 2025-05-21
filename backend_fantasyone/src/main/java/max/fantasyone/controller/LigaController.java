@@ -87,32 +87,25 @@ public class LigaController {
 
     // POST /api/ligas/{id}/unirse → unirse a una liga por su ID
     @PostMapping("/{id}/unirse")
-    public ResponseEntity<?> unirseALiga(@PathVariable Long id, @RequestBody UnirseLigaRequestDTO request) {
-        try {
-            // unirseALiga ahora devuelve el DTO de equipo
-            EquipoUsuarioResponseDTO equipoDto = ligaService.unirseALiga(id, request.getUsuarioId());
-            return ResponseEntity.ok(equipoDto);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<EquipoUsuarioResponseDTO> unirseALiga(
+            @PathVariable Long id,
+            @RequestBody UnirseLigaRequestDTO request
+    ) {
+        EquipoUsuarioResponseDTO equipoDto = ligaService.unirseALiga(id, request.getUsuarioId());
+        return ResponseEntity.ok(equipoDto);
     }
 
     // POST /api/ligas/unirsePrivada → unirse a una liga privada usando nombre y clave
     @PostMapping("/unirsePrivada")
-    public ResponseEntity<?> unirseALigaPrivada(@RequestBody UnirseLigaPrivadaRequestDTO request) {
-        try {
-            EquipoUsuarioResponseDTO equipoDto = ligaService.unirseALigaPrivada(
-                            request.getNombreLiga(),
-                            request.getClaveAcceso(),
-                            request.getUsuarioId());
-            return ResponseEntity.ok(equipoDto);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<EquipoUsuarioResponseDTO> unirseALigaPrivada(
+            @RequestBody UnirseLigaPrivadaRequestDTO request
+    ) {
+        EquipoUsuarioResponseDTO equipoDto = ligaService.unirseALigaPrivada(
+                request.getNombreLiga(),
+                request.getClaveAcceso(),
+                request.getUsuarioId()
+        );
+        return ResponseEntity.ok(equipoDto);
     }
 
 

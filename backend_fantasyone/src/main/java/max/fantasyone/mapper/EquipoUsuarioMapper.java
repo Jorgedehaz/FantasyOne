@@ -2,7 +2,6 @@ package max.fantasyone.mapper;
 
 import max.fantasyone.dto.request.EquipoUsuarioRequestDTO;
 import max.fantasyone.dto.response.EquipoUsuarioResponseDTO;
-import max.fantasyone.dto.response.PilotoResponseDTO;
 import max.fantasyone.model.EquipoUsuario;
 import max.fantasyone.model.Piloto;
 import max.fantasyone.repository.LigaRepository;

@@ -21,10 +21,7 @@ public class EquipoUsuario {
     @JoinColumn(name = "liga_id", nullable = false)
     private Liga liga;
 
-    /**
-     * Lista de pilotos fichados para este equipo.
-     * Tamaño máximo 2 pilotos.
-     */
+    //lista de pilotos del equipo limitada a 2
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "equipo_pilotos",

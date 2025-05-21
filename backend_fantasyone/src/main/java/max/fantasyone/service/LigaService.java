@@ -1,5 +1,6 @@
 package max.fantasyone.service;
 
+import jakarta.transaction.Transactional;
 import max.fantasyone.dto.request.EquipoUsuarioRequestDTO;
 import max.fantasyone.dto.response.EquipoUsuarioResponseDTO;
 import max.fantasyone.mapper.EquipoUsuarioMapper;
@@ -51,22 +52,28 @@ public class LigaService {
     }
 
     //Guardar una liga y su creador
+    @Transactional  // importante para que todo persista en la misma tx
     public Liga guardar(Liga liga, Long usuarioCreadorId) {
+        // 1) guardas la liga y añades al usuario
         Usuario usuario = usuarioRepository.findById(usuarioCreadorId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario creador no encontrado"));
+        Liga guardada = ligaRepository.save(liga);
+        guardada.getUsuarios().add(usuario);
+        usuario.getLigas().add(guardada);
+        usuarioRepository.save(usuario);
 
-        Liga ligaGuardada = ligaRepository.save(liga); // Primero se guarda la liga
+        // 2) inicializas pilotos y mercado
+        piniService.inicializarParaLiga(guardada);
+        mercadoService.generarMercadoInicial(guardada, 10);
 
-        ligaGuardada.getUsuarios().add(usuario);
-        usuario.getLigas().add(ligaGuardada);
+        // 3) creamos el equipo del creador de la liga ya que este nunca llama al metodo unirse, se une al crearla
+        EquipoUsuarioRequestDTO dto = new EquipoUsuarioRequestDTO();
+        dto.setUsuarioId(usuarioCreadorId);
+        dto.setLigaId(guardada.getId());
+        dto.setPilotoIds(Collections.emptyList());
+        equipoUsuarioService.crearEquipo(dto);
 
-        usuarioRepository.save(usuario); // Luego se guarda la relación con el usuario
-
-        // Crear mercado automáticamente para esta liga
-        piniService.inicializarParaLiga(ligaGuardada);
-        mercadoService.generarMercadoInicial(ligaGuardada, 10);
-
-        return ligaGuardada;
+        return guardada;
     }
 
 
@@ -80,42 +87,42 @@ public class LigaService {
     }
 
     //unirse a una liga con la id de usuario
+    @Transactional
     public EquipoUsuarioResponseDTO unirseALiga(Long ligaId, Long usuarioId) {
         Liga liga = ligaRepository.findById(ligaId)
                 .orElseThrow(() -> new IllegalArgumentException("Liga no encontrada"));
-
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         if (liga.getUsuarios().contains(usuario)) {
-            throw new IllegalStateException("Ya estás unido a esta liga");
+            throw new IllegalStateException("Ya estás en esa liga");
         }
-
         if (liga.getUsuarios().size() >= liga.getMaxUsuarios()) {
-            throw new IllegalStateException("La liga ya está completa");
+            throw new IllegalStateException("La liga está completa");
         }
 
+        // 1) Persiste la relación usuario–liga
         liga.getUsuarios().add(usuario);
         usuario.getLigas().add(liga);
-
-        ligaRepository.save(liga); // guarda también la relación entre el usuario y la liga a la que se une
+        ligaRepository.save(liga);
         usuarioRepository.save(usuario);
 
-        // Crear equipo para el usuario en esta liga
+        // 2) Crea y persiste el equipo con presupuesto inicial
         EquipoUsuarioRequestDTO dto = new EquipoUsuarioRequestDTO();
         dto.setUsuarioId(usuarioId);
         dto.setLigaId(ligaId);
         dto.setPilotoIds(Collections.emptyList());
         EquipoUsuario equipo = equipoUsuarioService.crearEquipo(dto);
 
+        // 3) Mapea y devuelve el DTO
         return equipoUsuarioMapper.toDTO(equipo);
     }
 
     //Unirse a una liga privada con clave de acceso
+    @Transactional
     public EquipoUsuarioResponseDTO unirseALigaPrivada(String nombreLiga, String claveAcceso, Long usuarioId) {
         Liga liga = ligaRepository.findByNombreAndCodigoAcceso(nombreLiga, claveAcceso)
                 .orElseThrow(() -> new IllegalArgumentException("Nombre de liga o clave incorrectos"));
-        // Reutiliza el método unirseALiga
         return unirseALiga(liga.getId(), usuarioId);
     }
 
