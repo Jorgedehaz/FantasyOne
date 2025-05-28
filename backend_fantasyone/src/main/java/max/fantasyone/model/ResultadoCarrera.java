@@ -3,8 +3,6 @@ package max.fantasyone.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class ResultadoCarrera {
@@ -12,9 +10,8 @@ public class ResultadoCarrera {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "piloto_id", nullable = false)
-    private Piloto piloto;
+    @Column(name = "pilotoexternal_id", nullable = false)
+    private String pilotoExternalId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "carrera_id", nullable = false)
@@ -62,13 +59,9 @@ public class ResultadoCarrera {
         this.id = id;
     }
 
-    public Piloto getPiloto() {
-        return piloto;
-    }
+    public String getPilotoExternalId() {return pilotoExternalId;}
 
-    public void setPiloto(Piloto piloto) {
-        this.piloto = piloto;
-    }
+    public void setPilotoExternalId(String pilotoExternalId) {this.pilotoExternalId = pilotoExternalId;}
 
     public Carrera getCarrera() {
         return carrera;

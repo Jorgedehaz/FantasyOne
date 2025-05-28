@@ -13,8 +13,15 @@ const LigaDetalle = () => {
     const [equipo, setEquipo] = useState(null);
     const [clasificacion, setClasificacion] = useState([]);
 
+    // 1. Recalcular puntos al entrar (opcional)
     useEffect(() => {
-        // Sesión
+        axios.post(`/api/resultados/recalcular-puntos`)
+            .then(() => console.log("Puntos recalculados correctamente"))
+            .catch(err => console.error("Error recalculando puntos:", err));
+    }, [id]);
+
+    // 2. Carga de datos de liga, mercado, equipo y clasificación
+    useEffect(() => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         if (!usuario) {
             window.location.href = "/login";
@@ -22,34 +29,24 @@ const LigaDetalle = () => {
         }
         const usuarioId = usuario.id;
 
-        // Liga
-        axios
-            .get(`/api/ligas/${id}`)
-            .then((res) => setLiga(res.data))
-            .catch((err) => console.error("Error cargando liga:", err));
+        axios.get(`/api/ligas/${id}`)
+            .then(res => setLiga(res.data))
+            .catch(err => console.error("Error cargando liga:", err));
 
-        // Mercado
-        axios
-            .get(`/api/mercados/liga/${id}`)
-            .then((res) => setMercado(res.data))
-            .catch((err) => console.error("Error cargando mercado:", err));
+        axios.get(`/api/mercados/liga/${id}`)
+            .then(res => setMercado(res.data))
+            .catch(err => console.error("Error cargando mercado:", err));
 
-        // Equipo del usuario
-        axios
-            .get(`/api/equipos/usuario/${usuarioId}/liga/${id}`)
-            .then((res) => setEquipo(res.data))
-            .catch((err) => console.error("Error cargando equipo:", err));
+        axios.get(`/api/equipos/usuario/${usuarioId}/liga/${id}`)
+            .then(res => setEquipo(res.data))
+            .catch(err => console.error("Error cargando equipo:", err));
 
-        // Clasificación de la liga
-        axios
-            .get(`/api/equipos/clasificacion/${id}`)
-            .then((res) => setClasificacion(res.data))
-            .catch((err) => console.error("Error cargando clasificación:", err));
+        axios.get(`/api/equipos/clasificacion/${id}`)
+            .then(res => setClasificacion(res.data))
+            .catch(err => console.error("Error cargando clasificación:", err));
     }, [id]);
 
-    if (!liga) {
-        return <p className="liga-detalle-container">Cargando liga…</p>;
-    }
+    if (!liga) return <p className="liga-detalle-container">Cargando liga…</p>;
 
     return (
         <div className="liga-detalle-container">
@@ -66,7 +63,7 @@ const LigaDetalle = () => {
                                     <p><strong>Puntos:</strong> {equipo.puntosAcumulados}</p>
                                 </div>
                                 <ul className="equipo-lista">
-                                    {equipo.pilotos.map((p) => (
+                                    {equipo.pilotos.map(p => (
                                         <li key={p.id} className="equipo-piloto-item">
                                             <img
                                                 src={p.imagenUrl}
@@ -76,12 +73,12 @@ const LigaDetalle = () => {
                                             <div>
                                                 <span>{p.nombreCompleto}</span>
                                                 <span>{p.precio} €</span>
+                                                {/* Si quieres puntos por piloto, agregar: */}
+                                                {/* <span>Puntos: {p.puntosFantasy}</span> */}
                                             </div>
                                         </li>
                                     ))}
-                                    {equipo.pilotos.length === 0 && (
-                                        <li>No tienes pilotos fichados aún.</li>
-                                    )}
+                                    {equipo.pilotos.length === 0 && <li>No tienes pilotos fichados aún.</li>}
                                 </ul>
                             </>
                         ) : (
@@ -124,19 +121,21 @@ const LigaDetalle = () => {
                     <section className="seccion mercado-section">
                         <h3>Mercado Actual</h3>
                         <p><strong>Fecha:</strong> {mercado?.fecha || '—'}</p>
-                        {mercado?.pilotos && mercado.pilotos.length > 0 ? (
+                        {mercado?.pilotos?.length > 0 ? (
                             <ul className="pilotos-lista">
-                                {mercado.pilotos.map((p) => (
+                                {mercado.pilotos.map(p => (
                                     <li key={p.id} className="piloto-item">
                                         <img
                                             src={p.imagenUrl}
                                             alt={p.nombreCompleto}
                                             className="piloto-imagen"
                                         />
+
                                         <div className="piloto-datos">
                                             <span className="piloto-nombre">{p.nombreCompleto}</span>
-                                            <span className="piloto-precio">{p.precio} €</span>
+                                            <span className="piloto-puntos">{p.puntosFantasy} pts</span>
                                         </div>
+                                            <span className="piloto-precio">{p.precio} €</span>
                                     </li>
                                 ))}
                             </ul>

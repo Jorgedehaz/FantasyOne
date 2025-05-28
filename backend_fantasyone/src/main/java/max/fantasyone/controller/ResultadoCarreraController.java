@@ -1,83 +1,70 @@
 package max.fantasyone.controller;
 
-
-import max.fantasyone.dto.request.ResultadoCarreraRequestDTO;
-import max.fantasyone.dto.response.ResultadoCarreraResponseDTO;
 import max.fantasyone.mapper.ResultadoCarreraMapper;
-import max.fantasyone.model.ResultadoCarrera;
-import max.fantasyone.service.ResultadoCarreraService;
+import max.fantasyone.service.ResultadoInitializeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import max.fantasyone.dto.response.ResultadoCarreraResponseDTO;
+import max.fantasyone.model.ResultadoCarrera;
+import max.fantasyone.service.ResultadoCarreraService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/resultados")
 public class ResultadoCarreraController {
 
     private final ResultadoCarreraService resultadoService;
-    private final ResultadoCarreraMapper resultadoMapper;
+    private final ResultadoInitializeService resultadoInitializeService;
+    private final ResultadoCarreraMapper mapper;
 
     @Autowired
-    public ResultadoCarreraController(ResultadoCarreraService resultadoService,
-                                      ResultadoCarreraMapper resultadoMapper) {
+    public ResultadoCarreraController(ResultadoCarreraService resultadoService, ResultadoInitializeService resultadoInitializeService,ResultadoCarreraMapper mapper) {
         this.resultadoService = resultadoService;
-        this.resultadoMapper = resultadoMapper;
+        this.resultadoInitializeService = resultadoInitializeService;
+        this.mapper = mapper;
     }
 
-    // GET /api/resultados
+    // GET api/rsultados/recalcular-puntos -> Calcula los puntos para todos de forma manual (para pruebas o ajustes)
+    @PostMapping("/recalcular-puntos")
+    public ResponseEntity<Void> recalcularPuntosManualmente() {
+        resultadoService.calcularPuntosParaTodos();
+        return ResponseEntity.ok().build();
+    }
+
+    // GET api/rsultados/recalcular-ultimospuntos -> Calcula los puntos del ultimo resultado para todos
+    @PostMapping("/recalcular-ultimospuntos")
+    public ResponseEntity<Void> recalcular() {
+        resultadoService.recalcularPuntosUltimoResultado();
+        return ResponseEntity.ok().build();
+    }
+
+    //GET Devuelve la lista completa de resultados de carrera
     @GetMapping
-    public List<ResultadoCarreraResponseDTO> obtenerTodos() {
-        return resultadoService.obtenerTodos()
-                .stream()
-                .map(resultadoMapper::toDTO)
-                .toList();
+    public ResponseEntity<List<ResultadoCarreraResponseDTO>> getAllResultados() {
+        List<ResultadoCarrera> resultados = resultadoService.findAll();
+        List<ResultadoCarreraResponseDTO> dtos = resultados.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
-    // GET /api/resultados/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<ResultadoCarreraResponseDTO> obtenerPorId(@PathVariable Long id) {
-        return resultadoService.obtenerPorId(id)
-                .map(resultadoMapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // GET /api/resultados/piloto/{pilotoId}
-    @GetMapping("/piloto/{pilotoId}")
-    public List<ResultadoCarreraResponseDTO> obtenerPorPiloto(@PathVariable Long pilotoId) {
-        return resultadoService.buscarPorPiloto(pilotoId)
-                .stream()
-                .map(resultadoMapper::toDTO)
-                .toList();
-    }
-
-    // GET /api/resultados/carrera/{carreraId}
+    // GET api/resultados/carrera/id -> Obtiene el histórico de resultados para una carrera concreta
     @GetMapping("/carrera/{carreraId}")
-    public List<ResultadoCarreraResponseDTO> obtenerPorCarrera(@PathVariable Long carreraId) {
-        return resultadoService.buscarPorCarrera(carreraId)
-                .stream()
-                .map(resultadoMapper::toDTO)
-                .toList();
+    public ResponseEntity<List<ResultadoCarreraResponseDTO>> getResultadosByCarrera(
+            @PathVariable Long carreraId) {
+        List<ResultadoCarreraResponseDTO> dtos = resultadoService.obtenerResultadosPorCarrera(carreraId);
+        return ResponseEntity.ok(dtos);
     }
 
-    // POST /api/resultados
-    @PostMapping
-    public ResponseEntity<ResultadoCarreraResponseDTO> crear(@RequestBody ResultadoCarreraRequestDTO dto) {
-        ResultadoCarrera resultado = resultadoMapper.toEntity(dto);
-        ResultadoCarrera guardado = resultadoService.guardar(resultado);
-        return ResponseEntity.status(201).body(resultadoMapper.toDTO(guardado));
+    // POST api/rsultados/initialize -> Inicializa o recarga los resultados desde un archivo JSON de ejemplo
+    @PostMapping("/initialize")
+    public ResponseEntity<Void> initializeResultados() throws Exception {
+        resultadoInitializeService.importarDesdeJson();
+        return ResponseEntity.ok().build();
     }
 
-    // DELETE /api/resultados/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (resultadoService.obtenerPorId(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        resultadoService.eliminar(id);
-        return ResponseEntity.noContent().build();
-    }
+
 }
-

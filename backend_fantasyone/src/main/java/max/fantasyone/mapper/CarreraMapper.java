@@ -15,6 +15,7 @@ public class CarreraMapper {
         carrera.setFecha(dto.getFecha());
         carrera.setMeetingKey(dto.getMeetingKey());
         carrera.setTemporada(dto.getTemporada());
+        carrera.setExternalId(dto.getExternalId());
         return carrera;
     }
 
@@ -25,7 +26,8 @@ public class CarreraMapper {
                 carrera.getCircuito(),
                 carrera.getFecha(),
                 carrera.getMeetingKey(),
-                carrera.getTemporada()
+                carrera.getTemporada(),
+                carrera.getExternalId()
         );
     }
 }

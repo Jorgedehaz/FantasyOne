@@ -9,14 +9,17 @@ public class CarreraResponseDTO {
     private final LocalDate fecha;
     private final int meetingKey;
     private int temporada;
+    private final String externalId;
 
-    public CarreraResponseDTO(Long id, String nombreGP, String circuito, LocalDate fecha, int meetingKey, int temporada) {
+
+    public CarreraResponseDTO(Long id, String nombreGP, String circuito, LocalDate fecha, int meetingKey, int temporada,String externalId) {
         this.id = id;
         this.nombreGP = nombreGP;
         this.circuito = circuito;
         this.fecha = fecha;
         this.meetingKey = meetingKey;
         this.temporada = temporada;
+        this.externalId = externalId;
     }
 
     public Long getId() {
@@ -43,4 +46,5 @@ public class CarreraResponseDTO {
         return temporada;
     }
 
+    public String getExternalId() {return externalId;}
 }

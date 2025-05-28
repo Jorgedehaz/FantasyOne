@@ -8,6 +8,7 @@ public class CarreraRequestDTO {
     private LocalDate fecha;
     private int temporada;
     private int meetingKey;
+    private String externalId;
 
     public CarreraRequestDTO() {}
 
@@ -49,5 +50,9 @@ public class CarreraRequestDTO {
     public void setTemporada(int temporada) {
         this.temporada = temporada;
     }
+
+    public String getExternalId() {return externalId;}
+
+    public void setExternalId(String externalId) {this.externalId = externalId;}
 }
 

@@ -1,28 +1,29 @@
 package max.fantasyone.dto.response;
 
-public class ResultadoCarreraResponseDTO {
-    private final Long id;
-    private final String nombrePiloto;
-    private final String nombreGP;
-    private final int posicionFinal;
-    private final boolean vueltaRapida;
-    private final boolean polePosition;
-    private final boolean penalizado;
-    private final String tiempoTotal;
-    private final int paradasBoxes;
-    private final int stints;
-    private final String tipoNeumatico;
-    private final int puntosFantasy;
+import java.time.LocalDateTime;
 
-    public ResultadoCarreraResponseDTO(Long id, String nombrePiloto, String nombreGP, int posicionFinal,
-                                       boolean vueltaRapida, boolean polePosition, boolean penalizado,
-                                       String tiempoTotal, int paradasBoxes, int stints,
-                                       String tipoNeumatico, int puntosFantasy) {
+public class ResultadoCarreraResponseDTO {
+    private Long id;
+    private String pilotoExternalId;
+    private String carreraExternalId;
+    private LocalDateTime momento;
+    private int posicionFinal;
+    private boolean vueltaRapida;
+    private boolean polePosition;
+    private boolean penalizado;
+    private String tiempoTotal;
+    private int paradasBoxes;
+    private int stints;
+    private String tipoNeumatico;
+    private int puntosFantasy;
+
+    public ResultadoCarreraResponseDTO(Long id, String pilotoExternalId, String carreraExternalId, LocalDateTime momento, boolean vueltaRapida, int posicionFinal, boolean polePosition, boolean penalizado, String tiempoTotal, int paradasBoxes, int stints, String tipoNeumatico, int puntosFantasy) {
         this.id = id;
-        this.nombrePiloto = nombrePiloto;
-        this.nombreGP = nombreGP;
-        this.posicionFinal = posicionFinal;
+        this.pilotoExternalId = pilotoExternalId;
+        this.carreraExternalId = carreraExternalId;
+        this.momento = momento;
         this.vueltaRapida = vueltaRapida;
+        this.posicionFinal = posicionFinal;
         this.polePosition = polePosition;
         this.penalizado = penalizado;
         this.tiempoTotal = tiempoTotal;
@@ -36,47 +37,103 @@ public class ResultadoCarreraResponseDTO {
         return id;
     }
 
-    public String getNombrePiloto() {
-        return nombrePiloto;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getNombreGP() {
-        return nombreGP;
+    public String getPilotoExternalId() {
+        return pilotoExternalId;
+    }
+
+    public void setPilotoExternalId(String pilotoExternalId) {
+        this.pilotoExternalId = pilotoExternalId;
+    }
+
+    public String getCarreraExternalId() {
+        return carreraExternalId;
+    }
+
+    public void setCarreraExternalId(String carreraExternalId) {
+        this.carreraExternalId = carreraExternalId;
+    }
+
+    public LocalDateTime getMomento() {
+        return momento;
+    }
+
+    public void setMomento(LocalDateTime momento) {
+        this.momento = momento;
     }
 
     public int getPosicionFinal() {
         return posicionFinal;
     }
 
+    public void setPosicionFinal(int posicionFinal) {
+        this.posicionFinal = posicionFinal;
+    }
+
     public boolean isVueltaRapida() {
         return vueltaRapida;
+    }
+
+    public void setVueltaRapida(boolean vueltaRapida) {
+        this.vueltaRapida = vueltaRapida;
     }
 
     public boolean isPolePosition() {
         return polePosition;
     }
 
+    public void setPolePosition(boolean polePosition) {
+        this.polePosition = polePosition;
+    }
+
     public boolean isPenalizado() {
         return penalizado;
+    }
+
+    public void setPenalizado(boolean penalizado) {
+        this.penalizado = penalizado;
     }
 
     public String getTiempoTotal() {
         return tiempoTotal;
     }
 
+    public void setTiempoTotal(String tiempoTotal) {
+        this.tiempoTotal = tiempoTotal;
+    }
+
     public int getParadasBoxes() {
         return paradasBoxes;
+    }
+
+    public void setParadasBoxes(int paradasBoxes) {
+        this.paradasBoxes = paradasBoxes;
     }
 
     public int getStints() {
         return stints;
     }
 
+    public void setStints(int stints) {
+        this.stints = stints;
+    }
+
     public String getTipoNeumatico() {
         return tipoNeumatico;
     }
 
+    public void setTipoNeumatico(String tipoNeumatico) {
+        this.tipoNeumatico = tipoNeumatico;
+    }
+
     public int getPuntosFantasy() {
         return puntosFantasy;
+    }
+
+    public void setPuntosFantasy(int puntosFantasy) {
+        this.puntosFantasy = puntosFantasy;
     }
 }

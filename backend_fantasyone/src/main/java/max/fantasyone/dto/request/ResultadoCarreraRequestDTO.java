@@ -1,7 +1,7 @@
 package max.fantasyone.dto.request;
 
 public class ResultadoCarreraRequestDTO {
-    private Long pilotoId;
+    private String pilotoExternalId;
     private Long carreraId;
     private int posicionFinal;
     private boolean vueltaRapida;
@@ -15,13 +15,9 @@ public class ResultadoCarreraRequestDTO {
 
     public ResultadoCarreraRequestDTO() {}
 
-    public Long getPilotoId() {
-        return pilotoId;
-    }
+    public String getPilotoExternalId() {return pilotoExternalId;}
 
-    public void setPilotoId(Long pilotoId) {
-        this.pilotoId = pilotoId;
-    }
+    public void setPilotoExternalId(String pilotoExternalId) {this.pilotoExternalId = pilotoExternalId;}
 
     public Long getCarreraId() {
         return carreraId;

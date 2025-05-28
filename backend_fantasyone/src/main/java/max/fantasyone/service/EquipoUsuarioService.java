@@ -100,7 +100,7 @@ public class EquipoUsuarioService {
 
         int totalPuntos = equipo.getPilotos().stream()
                 .mapToInt(p -> resultadoCarreraRepository
-                        .findByPilotoAndMomentoAfter(p, desde)
+                        .findByPilotoExternalIdAndMomentoAfter(p.getExternalId(), desde)
                         .stream()
                         .mapToInt(ResultadoCarrera::getPuntosFantasy)
                         .sum())
@@ -112,13 +112,24 @@ public class EquipoUsuarioService {
 
 
     //Obtiene la clasificación de una liga ordenada por puntos descendente
-    @Transactional(readOnly = true)
+    @Transactional
     public List<EquipoUsuario> calcularClasificacion(Long ligaId) {
         List<EquipoUsuario> equipos = buscarPorLiga(ligaId);
-        // Asegurarnos de que están actualizados
-        equipos.forEach(e -> actualizarPuntosEquipo(e.getId()));
+
+        equipos.forEach(equipo -> {
+            // suma todos los puntos de sus pilotos
+            int puntosEquipo = equipo.getPilotos().stream()
+                    .mapToInt(p -> resultadoCarreraRepository
+                            .sumPuntosByPilotoExternalId(p.getExternalId()))
+                    .sum();
+
+            equipo.setPuntosAcumulados(puntosEquipo);
+            equipoUsuarioRepository.save(equipo);
+        });
+
+        // ordenar y devolver
         return equipos.stream()
                 .sorted(Comparator.comparingInt(EquipoUsuario::getPuntosAcumulados).reversed())
-                .collect(Collectors.toList());
+                .toList();
     }
 }

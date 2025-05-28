@@ -9,8 +9,9 @@
     "pais": "NED",
     "equipo": "Red Bull Racing",
     "colorEquipo": "3671C6",
-    "imagenUrl": "https://example.com/verstappen.png",
-    "precio": 130.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png",
+    "precio": 130.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "81",
@@ -22,8 +23,9 @@
     "pais": "AUS",
     "equipo": "McLaren Mercedes",
     "colorEquipo": "FF8700",
-    "imagenUrl": "https://example.com/piastri.png",
-    "precio": 105.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png",
+    "precio": 105.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "4",
@@ -35,8 +37,9 @@
     "pais": "GBR",
     "equipo": "McLaren Mercedes",
     "colorEquipo": "FF8700",
-    "imagenUrl": "https://example.com/norris.png",
-    "precio": 115.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png",
+    "precio": 115.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "16",
@@ -48,8 +51,9 @@
     "pais": "MON",
     "equipo": "Ferrari",
     "colorEquipo": "DC0000",
-    "imagenUrl": "https://example.com/leclerc.png",
-    "precio": 120.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png",
+    "precio": 120.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "44",
@@ -61,8 +65,9 @@
     "pais": "GBR",
     "equipo": "Ferrari",
     "colorEquipo": "DC0000",
-    "imagenUrl": "https://example.com/hamilton.png",
-    "precio": 125.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png",
+    "precio": 125.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "63",
@@ -74,8 +79,9 @@
     "pais": "GBR",
     "equipo": "Mercedes",
     "colorEquipo": "00D2BE",
-    "imagenUrl": "https://example.com/russell.png",
-    "precio": 110.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png",
+    "precio": 110.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "12",
@@ -87,21 +93,23 @@
     "pais": "ITA",
     "equipo": "Mercedes",
     "colorEquipo": "00D2BE",
-    "imagenUrl": "https://example.com/antonelli.png",
-    "precio": 95.0
+    "imagenUrl": "https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/A/ANDANT01_Andrea%20Kimi_Antonelli/andant01.png.transform/1col/image.png",
+    "precio": 95.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "14",
     "nombre": "Fernando",
     "apellido": "Alonso",
-    "nombreCompleto": "Mi padre",
+    "nombreCompleto": "Fernando Alonso (GOAT)",
     "acronimo": "ALO",
     "numero": 14,
     "pais": "ESP",
     "equipo": "Aston Martin",
     "colorEquipo": "006F62",
-    "imagenUrl": "https://example.com/alonso.png",
-    "precio": 110.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png",
+    "precio": 110.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "18",
@@ -113,8 +121,9 @@
     "pais": "CAN",
     "equipo": "Aston Martin",
     "colorEquipo": "006F62",
-    "imagenUrl": "https://example.com/stroll.png",
-    "precio": 90.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png",
+    "precio": 90.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "10",
@@ -126,8 +135,9 @@
     "pais": "FRA",
     "equipo": "Alpine",
     "colorEquipo": "0090FF",
-    "imagenUrl": "https://example.com/gasly.png",
-    "precio": 95.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png",
+    "precio": 95.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "7",
@@ -139,8 +149,9 @@
     "pais": "AUS",
     "equipo": "Alpine",
     "colorEquipo": "0090FF",
-    "imagenUrl": "https://example.com/doohan.png",
-    "precio": 85.0
+    "imagenUrl": "https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/J/JACDOO01_Jack_Doohan/jacdoo01.png.transform/1col/image.png",
+    "precio": 85.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "31",
@@ -152,8 +163,9 @@
     "pais": "FRA",
     "equipo": "Haas",
     "colorEquipo": "B6BABD",
-    "imagenUrl": "https://example.com/ocon.png",
-    "precio": 90.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png",
+    "precio": 90.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "87",
@@ -165,8 +177,9 @@
     "pais": "GBR",
     "equipo": "Haas",
     "colorEquipo": "B6BABD",
-    "imagenUrl": "https://example.com/bearman.png",
-    "precio": 80.0
+    "imagenUrl": "https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/1col/image.png",
+    "precio": 80.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "27",
@@ -178,8 +191,9 @@
     "pais": "DEU",
     "equipo": "Kick Sauber",
     "colorEquipo": "52E252",
-    "imagenUrl": "https://example.com/hulkenberg.png",
-    "precio": 85.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/1col/image.png",
+    "precio": 85.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "5",
@@ -191,8 +205,9 @@
     "pais": "BRA",
     "equipo": "Kick Sauber",
     "colorEquipo": "52E252",
-    "imagenUrl": "https://example.com/bortoleto.png",
-    "precio": 80.0
+    "imagenUrl": "https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/G/GABBOR01_Gabriel_Bortoleto/gabbor01.png.transform/1col/image.png",
+    "precio": 80.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "23",
@@ -204,8 +219,9 @@
     "pais": "THA",
     "equipo": "Williams Mercedes",
     "colorEquipo": "005AFF",
-    "imagenUrl": "https://example.com/albon.png",
-    "precio": 90.0
+    "imagenUrl": "https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/A/ALEALB01_Alexander_Albon/alealb01.png.transform/1col/image.png",
+    "precio": 90.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "55",
@@ -217,8 +233,9 @@
     "pais": "ESP",
     "equipo": "Williams Mercedes",
     "colorEquipo": "005AFF",
-    "imagenUrl": "https://example.com/sainz.png",
-    "precio": 100.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png",
+    "precio": 100.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "22",
@@ -230,8 +247,9 @@
     "pais": "JPN",
     "equipo": "Red Bull Racing",
     "colorEquipo": "3671C6",
-    "imagenUrl": "https://example.com/tsunoda.png",
-    "precio": 85.0
+    "imagenUrl": "https://www.formula1.com/content/dam/fom-website/drivers/Y/YUKTSU01_Yuki_Tsunoda/yuktsu01.png.transform/1col/image.png",
+    "precio": 85.0,
+    "puntosFantasy": 0
   },
   {
     "externalId": "6",
@@ -243,7 +261,8 @@
     "pais": "FRA",
     "equipo": "Red Bull Racing",
     "colorEquipo": "3671C6",
-    "imagenUrl": "https://example.com/hadjar.png",
-    "precio": 80.0
+    "imagenUrl": "https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/1col/image.png",
+    "precio": 80.0,
+    "puntosFantasy": 0
   }
 ]

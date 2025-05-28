@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface CarreraRepository extends JpaRepository<Carrera, Long> {
     Optional<Carrera> findByMeetingKey(int meetingKey);
     Optional<Carrera> findByNombreGP(String nombreGP);
-    List<Carrera> findByFecha(LocalDate fecha);
+    List<Carrera> findByFecha(LocalDate momento);
+
+    Optional<Carrera> findByExternalId(String externalId);
 }
 

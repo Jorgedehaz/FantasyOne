@@ -48,9 +48,6 @@ public class Piloto {
     @Column(nullable = false)
     private double precio;         // precio actual
 
-    @OneToMany(mappedBy = "piloto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ResultadoCarrera> resultados = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "liga_id")
     private Liga liga;
@@ -59,7 +56,11 @@ public class Piloto {
     @JoinColumn(name = "mercado_id")
     private Mercado mercado;
 
+    @Column(unique = false, nullable = false)
     private String externalId;
+
+    @Column(unique = true, nullable = false)
+    private int puntosFantasy;
 
     public Piloto() {
     }
@@ -160,21 +161,11 @@ public class Piloto {
         this.precio = precio;
     }
 
-    public List<ResultadoCarrera> getResultados() {
-        return resultados;
-    }
-
-    public void setResultados(List<ResultadoCarrera> resultados) {
-        this.resultados = resultados;
-    }
-
     public Liga getLiga() {
         return liga;
     }
 
-    public void setLiga(Liga liga) {
-        this.liga = liga;
-    }
+    public void setLiga(Liga liga) {this.liga = liga;}
 
     public Mercado getMercado() {
         return mercado;
@@ -191,4 +182,8 @@ public class Piloto {
     public void setExternalId(String externalId) {
         this.externalId = externalId;
     }
+
+    public int getPuntosFantasy() {return puntosFantasy;}
+
+    public void setPuntosFantasy(int puntosFantasy) {this.puntosFantasy = puntosFantasy;}
 }

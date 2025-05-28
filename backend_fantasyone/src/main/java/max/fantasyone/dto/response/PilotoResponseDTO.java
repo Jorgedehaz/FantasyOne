@@ -10,6 +10,7 @@ public class PilotoResponseDTO {
     private String imagenUrl;
     private double precio;
     private boolean fichado;
+    private int puntosFantasy;
 
     public PilotoResponseDTO(Piloto piloto) {
         this.id = piloto.getId();
@@ -18,6 +19,7 @@ public class PilotoResponseDTO {
         this.imagenUrl = piloto.getImagenUrl();
         this.precio = piloto.getPrecio();
         this.fichado = piloto.isFichado();
+        this.puntosFantasy = piloto.getPuntosFantasy();
     }
 
     public Long getId() {
@@ -43,5 +45,9 @@ public class PilotoResponseDTO {
     public boolean isFichado() {
         return fichado;
     }
+
+    public int getPuntosFantasy() {return puntosFantasy;}
+
+    public void setPuntosFantasy(int puntosFantasy) {this.puntosFantasy = puntosFantasy;}
 }
 
