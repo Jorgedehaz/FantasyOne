@@ -20,6 +20,9 @@ public interface ResultadoCarreraRepository extends JpaRepository<ResultadoCarre
     //Devuelve el último resultado (por fecha/momento) de un piloto dado su externalId.
     ResultadoCarrera findTopByPilotoExternalIdOrderByMomentoDesc(String pilotoExternalId);
 
+    //Devuelve todos los resultados de un piloto (por externalId),ordenados por fecha de más antiguo a más nuevo.
+    List<ResultadoCarrera> findByPilotoExternalIdOrderByMomentoAsc(String pilotoExternalId);
+
 
     //Suma todos los puntosFantasy de los resultados de un piloto.
     @Query("SELECT COALESCE(SUM(r.puntosFantasy), 0) FROM ResultadoCarrera r WHERE r.pilotoExternalId = :extId")

@@ -11,6 +11,9 @@ public class PilotoResponseDTO {
     private double precio;
     private boolean fichado;
     private int puntosFantasy;
+    private String pais;
+    private int numero;
+    private String pilotoExternalId;
 
     public PilotoResponseDTO(Piloto piloto) {
         this.id = piloto.getId();
@@ -20,6 +23,9 @@ public class PilotoResponseDTO {
         this.precio = piloto.getPrecio();
         this.fichado = piloto.isFichado();
         this.puntosFantasy = piloto.getPuntosFantasy();
+        this.pais = piloto.getPais();
+        this.numero = piloto.getNumero();
+        this.pilotoExternalId = piloto.getExternalId();
     }
 
     public Long getId() {
@@ -49,5 +55,11 @@ public class PilotoResponseDTO {
     public int getPuntosFantasy() {return puntosFantasy;}
 
     public void setPuntosFantasy(int puntosFantasy) {this.puntosFantasy = puntosFantasy;}
+
+    public String getPais() {return pais;}
+
+    public int getNumero() {return numero;}
+
+    public String getPilotoExternalId() {return pilotoExternalId;}
 }
 

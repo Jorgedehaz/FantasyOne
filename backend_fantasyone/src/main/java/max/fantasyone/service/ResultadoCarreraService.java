@@ -93,6 +93,17 @@ public class ResultadoCarreraService {
     }
 
 
+    //Recupera todos los resultados para un piloto (por externalId),ordenados por 'momento' ascendente, y los convierte a DTO.
+    @Transactional(readOnly = true)
+    public List<ResultadoCarreraResponseDTO> listarResultadosPorPiloto(String pilotoExternalId) {
+        return resultadoRepo
+                .findByPilotoExternalIdOrderByMomentoAsc(pilotoExternalId)
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
     // Algoritmo que asigna puntos fantasy según posición, vuelta rápida, pole, penalizaciones...
     public int calcularPuntosFantasy(ResultadoCarrera r) {
         int puntos = 0;

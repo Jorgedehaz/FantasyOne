@@ -27,6 +27,16 @@ public class ResultadoCarreraController {
         this.mapper = mapper;
     }
 
+    //GET /api/resultados/piloto/{externalId} -> Devuelve el histórico de resultados para ese piloto.
+    @GetMapping("/piloto/{externalId}")
+    public ResponseEntity<List<ResultadoCarreraResponseDTO>> getResultadosPorPiloto(
+            @PathVariable String externalId
+    ) {
+        List<ResultadoCarreraResponseDTO> historia =
+                resultadoService.listarResultadosPorPiloto(externalId);
+        return ResponseEntity.ok(historia);
+    }
+
     // GET api/rsultados/recalcular-puntos -> Calcula los puntos para todos de forma manual (para pruebas o ajustes)
     @PostMapping("/recalcular-puntos")
     public ResponseEntity<Void> recalcularPuntosManualmente() {

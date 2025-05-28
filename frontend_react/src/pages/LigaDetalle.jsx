@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./LigaDetalle.css";
+import PilotoDetalle from './PilotoDetalle';
 
 // Base URL
 axios.defaults.baseURL = "http://localhost:8080";
@@ -12,6 +13,15 @@ const LigaDetalle = () => {
     const [mercado, setMercado] = useState(null);
     const [equipo, setEquipo] = useState(null);
     const [clasificacion, setClasificacion] = useState([]);
+    const [selectedPilot, setSelectedPilot] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+
+    // Función para abrir modal con detalles
+    const handlePilotClick = (piloto) => {
+        setSelectedPilot(piloto);
+        setShowModal(true);
+    };
+    const closeModal = () => setShowModal(false);
 
     // 1. Recalcular puntos al entrar (opcional)
     useEffect(() => {
@@ -70,10 +80,9 @@ const LigaDetalle = () => {
                                                 alt={p.nombreCompleto}
                                                 className="equipo-piloto-img"
                                             />
-                                            <div>
+                                            <div className="equipo-piloto-datos">
                                                 <span>{p.nombreCompleto}</span>
                                                 <span>{p.precio} €</span>
-                                                {/* Si quieres puntos por piloto, agregar: */}
                                                 {/* <span>Puntos: {p.puntosFantasy}</span> */}
                                             </div>
                                         </li>
@@ -119,32 +128,44 @@ const LigaDetalle = () => {
                 {/* Derecha: Mercado */}
                 <div className="liga-detalle-right">
                     <section className="seccion mercado-section">
-                        <h3>Mercado Actual</h3>
+                        <h3> Mercado </h3>
                         <p><strong>Fecha:</strong> {mercado?.fecha || '—'}</p>
                         {mercado?.pilotos?.length > 0 ? (
                             <ul className="pilotos-lista">
                                 {mercado.pilotos.map(p => (
-                                    <li key={p.id} className="piloto-item">
+                                    <li
+                                        key={p.id}
+                                        className="piloto-item"
+                                        onClick={() => handlePilotClick(p)}
+                                    >
                                         <img
                                             src={p.imagenUrl}
                                             alt={p.nombreCompleto}
                                             className="piloto-imagen"
                                         />
-
                                         <div className="piloto-datos">
                                             <span className="piloto-nombre">{p.nombreCompleto}</span>
                                             <span className="piloto-puntos">{p.puntosFantasy} pts</span>
                                         </div>
-                                            <span className="piloto-precio">{p.precio} €</span>
+                                        <span className="piloto-precio">{p.precio} €</span>
                                     </li>
                                 ))}
                             </ul>
                         ) : (
-                            <p>No hay pilotos disponibles en el mercado.</p>
+                            <p>Algo ha salido mal: No hay pilotos disponibles en el mercado.</p>
                         )}
                     </section>
                 </div>
             </div>
+
+            {/* Modal de detalles de piloto */}
+            {showModal && selectedPilot && (
+                <PilotoDetalle
+                    piloto={selectedPilot}
+                    show={showModal}
+                    onClose={closeModal}
+                />
+            )}
         </div>
     );
 };
