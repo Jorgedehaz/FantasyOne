@@ -84,31 +84,53 @@ public class EquipoUsuarioService {
         Piloto piloto = pilotoRepository.findById(pilotoId)
                 .orElseThrow(() -> new IllegalArgumentException("Piloto no encontrado: " + pilotoId));
 
-        // Lógica de negocio en la entidad
+        // lógica de presupuesto
+        if (equipo.getMonedas() < piloto.getPrecio()) {
+            throw new IllegalStateException("No tienes suficiente presupuesto para fichar a " + piloto.getNombreCompleto());
+        }
+
+        if (equipo.getPilotos().size() >= 2) {
+            throw new IllegalStateException("Máximo 2 pilotos por equipo");
+        }
+
+        // Marcar fecha de fichaje y persistirlo
+        piloto.setFechaFichaje(LocalDateTime.now());
+        // Persistir piloto antes de añadirlo al equipo
+        pilotoRepository.save(piloto);
+
+        // Añadirlo al equipo y restar presupuesto
         equipo.ficharPiloto(piloto);
         piloto.setFichado(true);
+
+        // Guardar el cambio de 'fichado'
+        pilotoRepository.save(piloto);
+
+        // Recalcular puntos del equipo (solo a partir de la fecha de fichaje)
+        actualizarPuntosEquipo(equipo.getId());
 
         return equipoUsuarioRepository.save(equipo);
     }
 
 
      // Recalcula y actualiza los puntos acumulados del equipo,sumando todos los resultados posteriores a la creación de este
-    @Transactional
-    public void actualizarPuntosEquipo(Long equipoId) {
-        EquipoUsuario equipo = obtenerPorId(equipoId);
-        LocalDateTime desde = equipo.getCreacion();
+     public void actualizarPuntosEquipo(Long equipoId) {
+         EquipoUsuario equipo = obtenerPorId(equipoId);
 
-        int totalPuntos = equipo.getPilotos().stream()
-                .mapToInt(p -> resultadoCarreraRepository
-                        .findByPilotoExternalIdAndMomentoAfter(p.getExternalId(), desde)
-                        .stream()
-                        .mapToInt(ResultadoCarrera::getPuntosFantasy)
-                        .sum())
-                .sum();
+         int puntosTotales = equipo.getPilotos().stream()
+                 .mapToInt(p -> {
+                     LocalDateTime fFicha = p.getFechaFichaje();
+                     // sumo solo lo que este piloto ha hecho DESDE su fecha de fichaje
+                     return resultadoCarreraRepository
+                             .findByPilotoExternalIdAndMomentoAfter(p.getExternalId(), fFicha)
+                             .stream()
+                             .mapToInt(ResultadoCarrera::getPuntosFantasy)
+                             .sum();
+                 })
+                 .sum();
 
-        equipo.setPuntosAcumulados(totalPuntos);
-        equipoUsuarioRepository.save(equipo);
-    }
+         equipo.setPuntosAcumulados(puntosTotales);
+         equipoUsuarioRepository.save(equipo);
+     }
 
 
     //Obtiene la clasificación de una liga ordenada por puntos descendente
@@ -117,14 +139,8 @@ public class EquipoUsuarioService {
         List<EquipoUsuario> equipos = buscarPorLiga(ligaId);
 
         equipos.forEach(equipo -> {
-            // suma todos los puntos de sus pilotos
-            int puntosEquipo = equipo.getPilotos().stream()
-                    .mapToInt(p -> resultadoCarreraRepository
-                            .sumPuntosByPilotoExternalId(p.getExternalId()))
-                    .sum();
-
-            equipo.setPuntosAcumulados(puntosEquipo);
-            equipoUsuarioRepository.save(equipo);
+            // usa exactamente la misma lógica que en actualizarPuntosEquipo(...)
+            actualizarPuntosEquipo(equipo.getId());
         });
 
         // ordenar y devolver

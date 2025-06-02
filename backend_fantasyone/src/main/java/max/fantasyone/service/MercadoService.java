@@ -88,7 +88,11 @@ public class MercadoService {
         if (mercadoOpt.isEmpty()) {
             return List.of(); // lista vacía si no hay mercado
         }
-        return pilotoRepository.findByMercadoId(mercadoOpt.get().getId());
+        // Filtramos aquí los pilotos ya fichados
+        return pilotoRepository.findByMercadoId(mercadoOpt.get().getId())
+                .stream()
+                .filter(p -> !p.isFichado())
+                .collect(Collectors.toList());
     }
 
     public Optional<Mercado> obtenerPorLigaId(Long ligaId) {

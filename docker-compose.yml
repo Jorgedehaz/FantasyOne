@@ -1,32 +1,47 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8
-    container_name: mysql_db
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: fantasy
+
+  frontend:
+    build: ./frontend
     ports:
-      - "3306:3306"
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - fantasy-network
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./frontend:/app
+    command: npm run dev
 
   backend:
-    build: ./backend_fantasyone
-    container_name: springboot_app
+    build: ./backend
     ports:
       - "8080:8080"
     depends_on:
       - mysql
+    networks:
+      - fantasy-network
+    volumes:
+      - ./backend:/app
 
-  frontend:
-    build: ./frontend_react
-    container_name: react_app
+  mysql:
+    image: mysql:8.0
     ports:
-      - "3000:80"
-    depends_on:
-      - backend
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fantasyone
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - fantasy-network
 
 volumes:
-  mysql_data:
+  mysql-data:
+
+networks:
+  fantasy-network:
+

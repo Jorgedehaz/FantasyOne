@@ -18,6 +18,8 @@ public interface PilotoRepository extends JpaRepository<Piloto, Long> {
     Optional<Piloto> findByExternalId(String externalId);
     Optional<Piloto> findByExternalIdAndLigaId(String externalId, Long ligaId);
 
+    //Devuelve los pilotos con fichado=false
+    List<Piloto> findByMercadoIdAndFichadoFalse(Long mercadoId);
 
     //Devuelve todos los externalId de los pilotos.
     @Query("SELECT p.externalId FROM Piloto p")

@@ -1,7 +1,9 @@
 package max.fantasyone.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import max.fantasyone.dto.request.EquipoUsuarioRequestDTO;
 import max.fantasyone.dto.response.EquipoUsuarioResponseDTO;
+import max.fantasyone.exception.PresupuestoInsuficiente;
 import max.fantasyone.mapper.EquipoUsuarioMapper;
 import max.fantasyone.model.EquipoUsuario;
 import max.fantasyone.service.EquipoUsuarioService;
@@ -10,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -51,11 +55,10 @@ public class EquipoUsuarioController {
 
     //POST /api/equipos/{equipoId}/fichar?pilotoId={} → Ficha piloto y devuelve el equipo actualizado.
     @PostMapping("/{equipoId}/fichar")
-    public ResponseEntity<EquipoUsuarioResponseDTO> ficharPiloto(@PathVariable Long equipoId,
-                                                                 @RequestParam Long pilotoId) {
-        EquipoUsuario equipo = equipoUsuarioService.ficharPiloto(equipoId, pilotoId);
-        EquipoUsuarioResponseDTO response = equipoUsuarioMapper.toDTO(equipo);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<EquipoUsuarioResponseDTO> ficharPiloto(@PathVariable Long equipoId, @RequestParam Long pilotoId) {
+            EquipoUsuario equipo = equipoUsuarioService.ficharPiloto(equipoId, pilotoId);
+            EquipoUsuarioResponseDTO response = equipoUsuarioMapper.toDTO(equipo);
+            return ResponseEntity.ok(response);
     }
 
     //GET /api/equipos/clasificacion/{ligaId} → Devuelve la lista ordenada de equipos (clasificación)
@@ -66,5 +69,13 @@ public class EquipoUsuarioController {
                 .map(equipoUsuarioMapper::toDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);
+    }
+
+    @ExceptionHandler(PresupuestoInsuficiente.class)
+    public ResponseEntity<Map<String, String>> handlePresupuestoInsuficiente(PresupuestoInsuficiente ex) {
+        // Devolvemos { "message": "Presupuesto insuficiente para realizar el fichaje" } con HTTP 400
+        return ResponseEntity
+                .badRequest()
+                .body(Collections.singletonMap("message", ex.getMessage()));
     }
 }

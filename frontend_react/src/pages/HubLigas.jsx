@@ -29,6 +29,12 @@ const HubLigas = () => {
             .catch(err => console.error('Error fetching private leagues:', err));
     }, [usuarioId]);
 
+    const handleLogout = () => {
+        // Elimina la sesión y redirige a la pantalla de login
+        localStorage.removeItem('usuario');
+        navigate('/login'); // o la ruta que uses para LoginPage.jsx
+    };
+
     const handleCrearLiga = async (e) => {
         e.preventDefault();
         try {
@@ -41,7 +47,6 @@ const HubLigas = () => {
             window.location.reload();
         } catch (error) {
             console.error('Error creando liga:', error);
-            // Intentar extraer mensaje de error del backend
             const errData = error.response?.data;
             let msg;
             if (typeof errData === 'string') {
@@ -95,12 +100,12 @@ const HubLigas = () => {
         const llena = liga.usuariosIds?.length >= liga.maxUsuarios;
         return (
             <li key={liga.id} className="liga-item">
-        <span
-            className="liga-item-clickable"
-            onClick={() => irADetalleLiga(liga.id)}
-        >
-          {liga.nombre}
-        </span>
+                <span
+                    className="liga-item-clickable"
+                    onClick={() => irADetalleLiga(liga.id)}
+                >
+                    {liga.nombre}
+                </span>
                 {tipo === 'publica' && (
                     unido ? (
                         <button className="btn-unido">Unido</button>
@@ -118,6 +123,16 @@ const HubLigas = () => {
 
     return (
         <div className="hub-container">
+            {/* HEADER con botones Perfil / Logout */}
+            <div className="header-buttons">
+                <button className="crear-liga-btn" onClick={() => alert('Perfil (no implementado aún)')}>
+                    Perfil
+                </button>
+                <button className="crear-liga-btn" onClick={handleLogout}>
+                    Logout
+                </button>
+            </div>
+
             <h1 className="hub-title">Hub de Ligas</h1>
             <button className="crear-liga-btn" onClick={() => setMostrarModal(true)}>
                 Crear Liga
@@ -126,7 +141,7 @@ const HubLigas = () => {
             <div className="listas-container">
                 <div className="panel-ligas">
                     <h2>Ligas Públicas</h2>
-                    <input
+                    <input className="buscar-liga"
                         type="text"
                         placeholder="Buscar públicas"
                         value={filtroPublicas}
@@ -141,7 +156,7 @@ const HubLigas = () => {
 
                 <div className="panel-ligas">
                     <h2>Ligas Privadas</h2>
-                    <input
+                    <input className="buscar-liga"
                         type="text"
                         placeholder="Buscar privadas"
                         value={filtroPrivadas}

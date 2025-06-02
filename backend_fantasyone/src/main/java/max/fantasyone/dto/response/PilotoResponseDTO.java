@@ -15,6 +15,8 @@ public class PilotoResponseDTO {
     private int numero;
     private String pilotoExternalId;
 
+
+
     public PilotoResponseDTO(Piloto piloto) {
         this.id = piloto.getId();
         this.nombreCompleto = piloto.getNombreCompleto();
@@ -26,6 +28,15 @@ public class PilotoResponseDTO {
         this.pais = piloto.getPais();
         this.numero = piloto.getNumero();
         this.pilotoExternalId = piloto.getExternalId();
+    }
+
+    public PilotoResponseDTO(Long id, String nombreCompleto, double precio, int puntosFantasy, String imagenUrl, String pilotoExternalId) {
+        this.id = id;
+        this.nombreCompleto = nombreCompleto;
+        this.precio = precio;
+        this.puntosFantasy = puntosFantasy;
+        this.imagenUrl = imagenUrl;
+        this.pilotoExternalId = pilotoExternalId;
     }
 
     public Long getId() {

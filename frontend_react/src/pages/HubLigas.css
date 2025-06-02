@@ -1,4 +1,5 @@
 .hub-container {
+    position: relative;
     background-color: #2E3336;
     color: grey;
     min-height: 100vh;
@@ -6,7 +7,17 @@
     text-align: center;
 }
 
+
+.header-buttons {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    display: flex;
+    gap: 10px;
+}
+
 .hub-title {
+    color: white;
     font-size: 32px;
     margin-bottom: 20px;
 }
@@ -30,9 +41,17 @@
 
 .panel-ligas {
     background-color: #1e2124;
+    color: white;
     padding: 20px;
     border-radius: 10px;
     width: 400px;
+}
+
+.buscar-liga {
+    color: black;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .liga-item {
@@ -46,7 +65,6 @@
     cursor: pointer;
 }
 
-
 .unirse-btn, .completa-btn {
     background-color: #D70000;
     border: none;
@@ -56,13 +74,31 @@
     border-radius: 0.5rem;
 }
 
-input[type="text"], input[type="number"] {
+input[type="text"],
+input[type="number"] {
     width: 100%;
     padding: 8px;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
+/* ESTILOS PARA LOS INPUTS DEL MODAL*/
+.modal-content input {
+    color: black;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content input[type="checkbox"] {
+    accent-color: #D70000;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Resto de estilos del modal: */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -125,5 +161,3 @@ input[type="text"], input[type="number"] {
     cursor: not-allowed;
     pointer-events: none;
 }
-
-

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,9 @@ public class Piloto {
 
     @Column(unique = true, nullable = false)
     private int puntosFantasy;
+
+    @Column(unique=false, nullable= true)
+    private LocalDateTime fechaFichaje;
 
     public Piloto() {
     }
@@ -186,4 +190,8 @@ public class Piloto {
     public int getPuntosFantasy() {return puntosFantasy;}
 
     public void setPuntosFantasy(int puntosFantasy) {this.puntosFantasy = puntosFantasy;}
+
+    public LocalDateTime getFechaFichaje() {return fechaFichaje;}
+
+    public void setFechaFichaje(LocalDateTime fechaFichaje) {this.fechaFichaje = fechaFichaje;}
 }
