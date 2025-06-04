@@ -90,3 +90,31 @@
     border-bottom: 1px solid #555;
     padding-bottom: 0.25rem;
 }
+
+/* Animación de entrada para modal */
+@keyframes fadeInModal {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content {
+    animation: fadeInModal 0.3s ease-out;
+}
+
+/* Hover sobre imagen */
+.piloto-img-large {
+    transition: transform 0.3s;
+}
+
+.piloto-img-large:hover {
+    transform: scale(1.05);
+}
+
+/* Hover sobre chart-wrapper */
+.chart-wrapper {
+    transition: transform 0.2s;
+}
+
+.chart-wrapper:hover {
+    transform: scale(1.02);
+}

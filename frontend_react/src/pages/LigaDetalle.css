@@ -91,7 +91,7 @@
 
 .piloto-precio {
     font-size: 1rem;
-    color: #D70000;
+    color: #FFFFFF;
     font-weight: 600;
     margin-left: auto;
 }
@@ -154,4 +154,75 @@
     border: none;
     padding: 0;
     margin: 0;
+}
+
+/* Animación de entrada para secciones */
+@keyframes fadeInSection {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.seccion {
+    animation: fadeInSection 0.4s ease forwards;
+    transition: background-color 0.3s;
+}
+
+/* Hover en filas de clasificación */
+.clasificacion-table tr:hover {
+    background-color: #2E3336;
+}
+
+/* Efectos en tarjetas de pilotos */
+.piloto-item,
+.equipo-piloto-item {
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.piloto-item:hover,
+.equipo-piloto-item:hover {
+    transform: scale(1.02);
+    background-color: #2e2f31;
+}
+
+.liga-detalle-header-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 1rem;
+}
+
+.crear-liga-btn {
+    background-color: #D70000;
+    border: none;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.crear-liga-btn:hover {
+    background-color: #b00000;
+    transform: scale(1.05);
+}
+
+.fichar-button {
+    background-color: #D70000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.fichar-button:hover {
+    background-color: #b00000;
+    transform: scale(1.05);
 }

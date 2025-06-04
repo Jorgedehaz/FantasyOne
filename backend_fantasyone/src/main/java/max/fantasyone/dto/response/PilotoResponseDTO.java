@@ -39,6 +39,19 @@ public class PilotoResponseDTO {
         this.pilotoExternalId = pilotoExternalId;
     }
 
+    public PilotoResponseDTO(Long id, String nombreCompleto, String equipo, String imagenUrl, double precio, boolean fichado, String pais, int numero, String externalId, int puntosAcumulados) {
+        this.id = id;
+        this.nombreCompleto = nombreCompleto;
+        this.equipo = equipo;
+        this.precio = precio;
+        this.imagenUrl = imagenUrl;
+        this.fichado = fichado;
+        this.pais = pais;
+        this.numero = numero;
+        this.pilotoExternalId = externalId;
+        this.puntosFantasy = puntosAcumulados;
+    }
+
     public Long getId() {
         return id;
     }

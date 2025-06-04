@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   frontend:
-    build: ./frontend
+    build: ./frontend_react
     ports:
       - "5173:5173"
     depends_on:
@@ -15,7 +15,7 @@ services:
     command: npm run dev
 
   backend:
-    build: ./backend
+    build: ./backend_fantasyone
     ports:
       - "8080:8080"
     depends_on:

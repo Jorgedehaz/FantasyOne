@@ -12,8 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PilotoMapper {
 
+
+    private ResultadoCarreraRepository resultadoRepo;
+
     @Autowired
-    private ResultadoCarreraRepository resultadoCarreraRepository;
+    public PilotoMapper(ResultadoCarreraRepository resultadoRepo) {
+        this.resultadoRepo = resultadoRepo;
+    }
 
     public Piloto toEntity(PilotoRequestDTO dto) {
         Piloto piloto = new Piloto();
@@ -32,14 +37,22 @@ public class PilotoMapper {
     }
 
 
-    public PilotoResponseDTO toDTO(Piloto piloto) {
-        int puntos = resultadoCarreraRepository
-                .findBypilotoExternalId(piloto.getExternalId())
-                .stream()
-                .mapToInt(ResultadoCarrera::getPuntosFantasy)
-                .sum();
-        PilotoResponseDTO dto = new PilotoResponseDTO(piloto);
-        dto.setPuntosFantasy(puntos);
-        return dto;
+    public PilotoResponseDTO toDTO(Piloto p) {
+        // 1) Calcular “puntos acumulados hasta ahora”:
+        int puntosAcumulados = resultadoRepo.sumPuntosByPilotoExternalId(p.getExternalId());
+
+        // 2) Rellenar el DTO incluyendo esos puntos:
+        return new PilotoResponseDTO(
+                p.getId(),
+                p.getNombreCompleto(),
+                p.getEquipo(),
+                p.getImagenUrl(),
+                p.getPrecio(),
+                p.isFichado(),
+                p.getPais(),
+                p.getNumero(),
+                p.getExternalId(),
+                puntosAcumulados
+        );
     }
 }

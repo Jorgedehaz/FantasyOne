@@ -125,6 +125,9 @@ const HubLigas = () => {
         <div className="hub-container">
             {/* HEADER con botones Perfil / Logout */}
             <div className="header-buttons">
+                <button className="crear-liga-btn" onClick={() => setMostrarModal(true)}>
+                    Crear Liga
+                </button>
                 <button className="crear-liga-btn" onClick={() => alert('Perfil (no implementado aún)')}>
                     Perfil
                 </button>
@@ -134,9 +137,7 @@ const HubLigas = () => {
             </div>
 
             <h1 className="hub-title">Hub de Ligas</h1>
-            <button className="crear-liga-btn" onClick={() => setMostrarModal(true)}>
-                Crear Liga
-            </button>
+
 
             <div className="listas-container">
                 <div className="panel-ligas">

@@ -38,19 +38,13 @@ public class MercadoMapper {
     }
 
     public MercadoResponseDTO toDTO(Mercado mercado) {
+        // En lugar de construir manualmente un PilotoResponseDTO sin el campo 'fichado',
+        // llamamos al mapeador genérico que asigna correctamente todos los atributos,
+        // incluido el booleano 'fichado'.
         List<PilotoResponseDTO> pilotosDTO = mercado.getPilotosMercado().stream()
-                // Primero filtramos aquellos pilotos que no estén fichados:
-                .filter(p -> !p.isFichado())
-                // Después los convertimos a PilotoResponseDTO usando su constructor:
-                .map(p -> new PilotoResponseDTO(
-                        p.getId(),
-                        p.getNombreCompleto(),
-                        p.getPrecio(),
-                        p.getPuntosFantasy(),
-                        p.getImagenUrl(),
-                        p.getExternalId()
-                ))
-                .collect(Collectors.toList());
+                .map(pilotoMapper::toDTO)      // usa el constructor que sí rellena 'fichado'
+                .filter(dtoPiloto -> !dtoPiloto.isFichado())
+                .toList();
 
         return new MercadoResponseDTO(
                 mercado.getId(),

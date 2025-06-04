@@ -161,3 +161,96 @@ input[type="number"] {
     cursor: not-allowed;
     pointer-events: none;
 }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalFadeIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.liga-item {
+    animation: fadeInUp 0.4s ease forwards;
+    transition: background-color 0.3s;
+}
+
+.liga-item:hover {
+    background-color: #2E3336;
+}
+
+.crear-liga-btn,
+.btn-unirse,
+.unirse-btn,
+.cancelar-btn {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.crear-liga-btn:hover,
+.btn-unirse:hover,
+.unirse-btn:hover {
+    background-color: #b00000;
+    transform: scale(1.03);
+}
+
+.cancelar-btn:hover {
+    background-color: #555;
+    transform: scale(1.03);
+}
+
+.panel-ligas {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+}
+
+.panel-ligas:hover {
+    transform: translateY(-5px);
+}
+
+input:focus {
+    outline: none;
+    border-color: #D70000;
+    box-shadow: 0 0 0 2px rgba(215, 0, 0, 0.4);
+}
+
+.modal-content input[type="checkbox"] {
+    accent-color: #D70000;
+    transition: transform 0.2s;
+}
+
+.modal-content input[type="checkbox"]:hover {
+    transform: scale(1.1);
+}
+
+.header-buttons button {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.header-buttons button:hover {
+    background-color: #b00000;
+    transform: scale(1.05);
+}
+
+.modal-content {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+
+.hub-title {
+    color: white;
+    font-size: 32px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #D70000;
+    padding-bottom: 10px;
+    max-width: 840px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.panel-ligas > .unirse-btn {
+    margin-top: 250px;
+    align-self: center;
+}

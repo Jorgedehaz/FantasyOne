@@ -93,6 +93,14 @@ const LigaDetalle = () => {
 
     return (
         <div className="liga-detalle-container">
+            <div className="liga-detalle-header-buttons">
+                <button className="crear-liga-btn" onClick={() => alert('Perfil (no implementado aún)')}>
+                    Mi Perfil
+                </button>
+                <button className="crear-liga-btn" onClick={() => window.location.href = '/hubligas'}>
+                    Volver
+                </button>
+            </div>
             <h2 className="liga-detalle-header">Liga: {liga.nombre}</h2>
             <div className="liga-detalle-layout">
                 {/* IZQUIERDA: Mi Equipo + Clasificación */}
@@ -107,7 +115,7 @@ const LigaDetalle = () => {
                                 </div>
                                 <ul className="equipo-lista">
                                     {equipo.pilotos.map(p => (
-                                        <li key={p.id} className="equipo-piloto-item">
+                                        <li key={p.id} className="equipo-piloto-item" onClick={() => handlePilotClick(p)}>
                                             <img src={p.imagenUrl} alt={p.nombreCompleto} className="equipo-piloto-img" />
                                             <div className="equipo-piloto-datos">
                                                 <div className="piloto-datos">

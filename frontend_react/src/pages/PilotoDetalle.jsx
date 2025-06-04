@@ -58,7 +58,7 @@ const PilotoDetalle = ({ piloto, show, onClose }) => {
             {
                 label: 'Puntos Fantasy',
                 data: history.map(r => r.puntosFantasy),
-                borderColor: 'rgba(215, 0, 0, 0.8)',
+                borderColor: 'rgba(215, 0, 0, 0.7)',
                 backgroundColor: '#D70000',
                 fill: false,
                 tension: 0.2
@@ -73,7 +73,7 @@ const PilotoDetalle = ({ piloto, show, onClose }) => {
             {
                 label: 'Estadísticas',
                 data: [poleCount, fastLapCount, penaltyCount],
-                backgroundColor: 'rgba(215, 0, 0, 0.8)'
+                backgroundColor: 'rgba(215, 0, 0, 0.6)'
             }
         ]
     };
@@ -96,6 +96,8 @@ const PilotoDetalle = ({ piloto, show, onClose }) => {
                 ticks: { color: '#FFFFFF' }
             },
             y: {
+                beginAtZero: true,
+                min: 0,
                 grid: { color: 'rgba(255, 255, 255, 0.2)' },
                 ticks: { color: '#FFFFFF' }
             }
