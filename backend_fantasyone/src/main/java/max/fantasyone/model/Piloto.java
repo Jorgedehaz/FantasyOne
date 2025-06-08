@@ -60,7 +60,7 @@ public class Piloto {
     @Column(unique = false, nullable = false)
     private String externalId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private int puntosFantasy;
 
     @Column(unique=false, nullable= true)
