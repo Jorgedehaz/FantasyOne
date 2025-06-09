@@ -8,6 +8,12 @@ services:
       MYSQL_DATABASE: fantasyone
       MYSQL_USER: fantasy
       MYSQL_PASSWORD: fant4sy
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - db_data:/var/lib/mysql
     ports:
@@ -20,6 +26,8 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+    db:
+      condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/fantasyone?useSSL=false&serverTimezone=UTC"
       SPRING_DATASOURCE_USERNAME: fantasy
