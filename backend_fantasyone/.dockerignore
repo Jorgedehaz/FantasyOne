@@ -1,0 +1,17 @@
+# Maven build artifacts
+target/
+.mvn/
+
+# Node artifacts (if any)
+node_modules/
+
+# Distribution folders
+dist/
+build/
+
+# IDE directories
+.idea/
+.vscode/
+
+# Other
+*.log
