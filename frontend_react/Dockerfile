@@ -18,7 +18,7 @@ FROM nginx:1.24-alpine
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 # Copia los archivos compilados
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
 
 # Exponemos el 80 (redistribuye de 5173 a 80 para producción)
 EXPOSE 80
