@@ -29,7 +29,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/fantasyone?useSSL=false&serverTimezone=UTC"
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/fantasyone?useSSL=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: fantasy
       SPRING_DATASOURCE_PASSWORD: fant4sy
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
