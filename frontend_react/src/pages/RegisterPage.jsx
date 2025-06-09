@@ -32,7 +32,7 @@ export default function RegisterPage() {
         }
 
         try {
-            await axios.post("http://backend:8080/api/auth/register", {
+            await axios.post("/api/auth/register", {
                 nombre,
                 email,
                 password,

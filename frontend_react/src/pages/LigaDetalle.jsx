@@ -4,8 +4,6 @@ import axios from "axios";
 import "./LigaDetalle.css";
 import PilotoDetalle from './PilotoDetalle';
 
-// Base URL
-axios.defaults.baseURL = "http://backend:8080";
 
 const LigaDetalle = () => {
     const { id } = useParams();
