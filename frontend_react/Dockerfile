@@ -16,7 +16,7 @@ RUN npm run build
 FROM nginx:1.24-alpine
 # Borra la configuración por defecto y copia la tuya
 RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
+COPY nginx.conf /etc/nginx/nginx.conf
 # Copia los archivos compilados
 COPY --from=builder /app/dist /usr/share/nginx/html
 
