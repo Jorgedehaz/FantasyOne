@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   db:
     image: mysql:8
@@ -25,9 +26,8 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
-      - db
-    db:
-      condition: service_healthy
+      db:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/fantasyone?useSSL=false&serverTimezone=UTC"
       SPRING_DATASOURCE_USERNAME: fantasy
