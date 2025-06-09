@@ -10,6 +10,6 @@ RUN npm run build
 FROM nginx:alpine
 # Copiamos el build de Vite al folder de nginx
 COPY --from=build /app/dist /usr/share/nginx/html
-# Opcional: si quieres customizar nginx, añade tu nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 CMD ["nginx","-g","daemon off;"]
