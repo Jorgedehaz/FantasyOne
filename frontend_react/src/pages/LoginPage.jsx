@@ -14,7 +14,7 @@ function LoginPage() {
         e.preventDefault();
         setError("");
         try {
-            const response = await axios.post("http://backend:8080/api/auth/login", formData);
+            const response = await axios.post("/api/auth/login", formData);
             const userData = response.data;
             localStorage.setItem("usuario", JSON.stringify(userData)); // Guardar los datos del usuario (por ahora usare esto para la sesion)
             window.location.href = "/hubligas"; // Redirigir al hub tras login
