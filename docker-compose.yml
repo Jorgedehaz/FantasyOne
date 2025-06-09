@@ -17,6 +17,7 @@ services:
     build:
       context: ./backend_fantasyone
       dockerfile: Dockerfile
+    restart: unless-stopped
     depends_on:
       - db
     environment:
@@ -31,6 +32,7 @@ services:
     build:
       context: ./frontend_react
       dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
       - "80:80"
     depends_on:
