@@ -1,47 +1,40 @@
-version: '3.8'
-
+version: "3.8"
 services:
-
-  frontend:
-    build: ./frontend_react
-    ports:
-      - "5173:5173"
-    depends_on:
-      - backend
-    networks:
-      - fantasy-network
+  db:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: fantasyone
+      MYSQL_USER: fantasy
+      MYSQL_PASSWORD: fant4sy
     volumes:
-      - ./frontend:/app
-    command: npm run dev
-
-  backend:
-    build: ./backend_fantasyone
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysql
-    networks:
-      - fantasy-network
-    volumes:
-      - ./backend:/app
-
-  mysql:
-    image: mysql:8.0
+      - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
+
+  backend:
+    build:
+      context: ./backend_fantasyone
+      dockerfile: Dockerfile
+    depends_on:
+      - db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: fantasyone
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - fantasy-network
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/fantasyone?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: fantasy
+      SPRING_DATASOURCE_PASSWORD: fant4sy
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend_react
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
 
 volumes:
-  mysql-data:
-
-networks:
-  fantasy-network:
-
+  db_data:

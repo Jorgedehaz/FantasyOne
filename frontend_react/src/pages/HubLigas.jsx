@@ -20,11 +20,11 @@ const HubLigas = () => {
     useEffect(() => {
         if (!usuarioId) return;
 
-        axios.get(`http://localhost:8080/api/ligas/privadas?esPrivada=false`)
+        axios.get(`http://backend:8080/api/ligas/privadas?esPrivada=false`)
             .then(res => setLigasPublicas(res.data))
             .catch(err => console.error('Error fetching public leagues:', err));
 
-        axios.get(`http://localhost:8080/api/ligas/privadas/${usuarioId}`)
+        axios.get(`http://backend:8080/api/ligas/privadas/${usuarioId}`)
             .then(res => setLigasPrivadas(res.data))
             .catch(err => console.error('Error fetching private leagues:', err));
     }, [usuarioId]);
@@ -39,7 +39,7 @@ const HubLigas = () => {
         e.preventDefault();
         try {
             await axios.post(
-                `http://localhost:8080/api/ligas?usuarioId=${usuarioId}`,
+                `http://backend:8080/api/ligas?usuarioId=${usuarioId}`,
                 nuevaLiga
             );
             setMostrarModal(false);
@@ -63,7 +63,7 @@ const HubLigas = () => {
     const handleUnirsePublica = async (ligaId) => {
         try {
             await axios.post(
-                `http://localhost:8080/api/ligas/${ligaId}/unirse?usuarioId=${usuarioId}`
+                `http://backend:8080/api/ligas/${ligaId}/unirse?usuarioId=${usuarioId}`
             );
             window.location.reload();
         } catch (error) {
@@ -81,7 +81,7 @@ const HubLigas = () => {
                 usuarioId
             };
             await axios.post(
-                'http://localhost:8080/api/ligas/unirsePrivada',
+                'http://backend:8080/api/ligas/unirsePrivada',
                 payload
             );
             setMostrarUnirsePrivada(false);
