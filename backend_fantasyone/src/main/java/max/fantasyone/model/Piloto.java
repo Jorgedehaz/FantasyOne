@@ -57,7 +57,7 @@ public class Piloto {
     @JoinColumn(name = "mercado_id")
     private Mercado mercado;
 
-    @Column(unique = false, nullable = false)
+    @Column(nullable = false)
     private String externalId;
 
     @Column(nullable = false)
