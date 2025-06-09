@@ -2,8 +2,7 @@ package max.fantasyone.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 public class ResultadoCarrera {
@@ -11,13 +10,15 @@ public class ResultadoCarrera {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "piloto_id", nullable = false)
-    private Piloto piloto;
+    @Column(name = "pilotoexternal_id", nullable = false)
+    private String pilotoExternalId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "carrera_id", nullable = false)
     private Carrera carrera;
+
+    @Column(nullable = false)
+    private LocalDateTime momento;  // nuevo: timestamp del resultado para medir a partir de cuando puntua para un equipo
 
     @Column(nullable = false)
     private int posicionFinal;
@@ -32,7 +33,7 @@ public class ResultadoCarrera {
     private boolean penalizado;
 
     @Column(nullable = false)
-    private double tiempoTotal;
+    private String tiempoTotal; // si da error pasar a Double en entity , dtos y mapper
 
     @Column(nullable = false)
     private int paradasBoxes;
@@ -58,13 +59,9 @@ public class ResultadoCarrera {
         this.id = id;
     }
 
-    public Piloto getPiloto() {
-        return piloto;
-    }
+    public String getPilotoExternalId() {return pilotoExternalId;}
 
-    public void setPiloto(Piloto piloto) {
-        this.piloto = piloto;
-    }
+    public void setPilotoExternalId(String pilotoExternalId) {this.pilotoExternalId = pilotoExternalId;}
 
     public Carrera getCarrera() {
         return carrera;
@@ -72,6 +69,14 @@ public class ResultadoCarrera {
 
     public void setCarrera(Carrera carrera) {
         this.carrera = carrera;
+    }
+
+    public LocalDateTime getMomento() {
+        return momento;
+    }
+
+    public void setMomento(LocalDateTime momento) {
+        this.momento = momento;
     }
 
     public int getPosicionFinal() {
@@ -106,11 +111,11 @@ public class ResultadoCarrera {
         this.penalizado = penalizado;
     }
 
-    public double getTiempoTotal() {
+    public String getTiempoTotal() {
         return tiempoTotal;
     }
 
-    public void setTiempoTotal(double tiempoTotal) {
+    public void setTiempoTotal(String tiempoTotal) {
         this.tiempoTotal = tiempoTotal;
     }
 

@@ -31,6 +31,9 @@ public class Carrera {
     @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResultadoCarrera> resultados = new ArrayList<>();
 
+    @Column(unique = true, nullable = false)
+    private String externalId;
+
     public Carrera() {
     }
 
@@ -89,5 +92,9 @@ public class Carrera {
     public void setResultados(List<ResultadoCarrera> resultados) {
         this.resultados = resultados;
     }
+
+    public String getExternalId() {return externalId;}
+
+    public void setExternalId(String externalId) {this.externalId = externalId;}
 }
 

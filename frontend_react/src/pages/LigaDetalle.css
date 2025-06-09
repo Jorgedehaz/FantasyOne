@@ -1,0 +1,228 @@
+.liga-detalle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2E3336;
+    color: #FFFFFF;
+    min-height: 100vh;
+    padding: 2rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.liga-detalle-header {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #D70000;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.liga-detalle-layout {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.liga-detalle-left,
+.liga-detalle-right {
+    flex: 1;
+    background-color: #1f2325;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.seccion {
+    margin-bottom: 1.5rem;
+}
+
+.seccion h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #555;
+    padding-bottom: 0.25rem;
+}
+
+.equipo-lista,
+.pilotos-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.equipo-piloto-item,
+.piloto-item {
+    display: flex;
+    align-items: center;
+    background-color: #3a3f42;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #555;
+}
+
+.equipo-piloto-img,
+.piloto-imagen {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    object-fit: cover;
+    border: 1px solid #555;
+}
+
+.piloto-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.piloto-nombre,
+.equipo-piloto-item span {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.piloto-precio {
+    font-size: 1rem;
+    color: #FFFFFF;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.piloto-puntos {
+    font-size: 1rem;
+}
+
+.clasificacion-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #555;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.clasificacion-table th,
+.clasificacion-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #555;
+    background-color: #3a3f42;
+}
+
+.clasificacion-table th {
+    background-color: #444;
+    font-weight: bold;
+}
+
+.clasificacion-table tr:last-child td {
+    border-bottom: none;
+}
+
+.mi-equipo-fila td {
+    background-color: #2e2f31;
+}
+
+.boton-rojo,
+.btn-fichar {
+    background-color: #D70000;
+    color: #FFFFFF;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.boton-rojo:hover,
+.btn-fichar:hover {
+    background-color: #b00000;
+}
+
+/* Adaptaciones de texto y panel */
+.liga-detalle-left .seccion,
+.liga-detalle-right .seccion {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Animación de entrada para secciones */
+@keyframes fadeInSection {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.seccion {
+    animation: fadeInSection 0.4s ease forwards;
+    transition: background-color 0.3s;
+}
+
+/* Hover en filas de clasificación */
+.clasificacion-table tr:hover {
+    background-color: #2E3336;
+}
+
+/* Efectos en tarjetas de pilotos */
+.piloto-item,
+.equipo-piloto-item {
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.piloto-item:hover,
+.equipo-piloto-item:hover {
+    transform: scale(1.02);
+    background-color: #2e2f31;
+}
+
+.liga-detalle-header-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 1rem;
+}
+
+.crear-liga-btn {
+    background-color: #D70000;
+    border: none;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.crear-liga-btn:hover {
+    background-color: #b00000;
+    transform: scale(1.05);
+}
+
+.fichar-button {
+    background-color: #D70000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.fichar-button:hover {
+    background-color: #b00000;
+    transform: scale(1.05);
+}

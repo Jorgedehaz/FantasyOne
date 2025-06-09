@@ -21,13 +21,25 @@ public class Usuario {
     private String password;
 
     @Column(nullable = false)
-    private String rol = "JUGADOR"; // "ADMIN" o "JUGADOR"
+    private String rol; // "ADMIN" o "USER"
+
+    @Column(nullable = false)
+    private boolean activo = true;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EquipoUsuario> equipos = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApuestaVirtual> apuestas = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_liga",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "liga_id")
+    )
+    private List<Liga> ligas = new ArrayList<>();
+
 
     public Usuario() {
     }
@@ -87,5 +99,21 @@ public class Usuario {
     public void setApuestas(List<ApuestaVirtual> apuestas) {
         this.apuestas = apuestas;
     }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public boolean isAdmin() {
+        return "ADMIN".equalsIgnoreCase(this.rol);
+    }
+
+    public List<Liga> getLigas() { return ligas; }
+
+    public void setLigas(List<Liga> ligas) { this.ligas = ligas; }
 }
 

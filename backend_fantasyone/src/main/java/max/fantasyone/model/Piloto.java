@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,6 @@ public class Piloto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id en la bd
                                    // Comentarios de ejemplo con lo que devuelve la API
-
     @Column(nullable = false)
     private String nombre;         // Max
 
@@ -49,8 +49,22 @@ public class Piloto {
     @Column(nullable = false)
     private double precio;         // precio actual
 
-    @OneToMany(mappedBy = "piloto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ResultadoCarrera> resultados = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "liga_id")
+    private Liga liga;
+
+    @ManyToOne
+    @JoinColumn(name = "mercado_id")
+    private Mercado mercado;
+
+    @Column(nullable = false)
+    private String externalId;
+
+    @Column(nullable = false)
+    private int puntosFantasy;
+
+    @Column(unique=false, nullable= true)
+    private LocalDateTime fechaFichaje;
 
     public Piloto() {
     }
@@ -151,11 +165,33 @@ public class Piloto {
         this.precio = precio;
     }
 
-    public List<ResultadoCarrera> getResultados() {
-        return resultados;
+    public Liga getLiga() {
+        return liga;
     }
 
-    public void setResultados(List<ResultadoCarrera> resultados) {
-        this.resultados = resultados;
+    public void setLiga(Liga liga) {this.liga = liga;}
+
+    public Mercado getMercado() {
+        return mercado;
     }
+
+    public void setMercado(Mercado mercado) {
+        this.mercado = mercado;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public int getPuntosFantasy() {return puntosFantasy;}
+
+    public void setPuntosFantasy(int puntosFantasy) {this.puntosFantasy = puntosFantasy;}
+
+    public LocalDateTime getFechaFichaje() {return fechaFichaje;}
+
+    public void setFechaFichaje(LocalDateTime fechaFichaje) {this.fechaFichaje = fechaFichaje;}
 }
