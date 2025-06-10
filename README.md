@@ -1,6 +1,6 @@
 # Despliegue Docker:
 
-**Para realizar un despliegue rápido del proyecto con Docker Desktop debemos seguir los siguientes pasos: **
+**Para realizar un despliegue rápido del proyecto con Docker Desktop debemos seguir los siguientes pasos:**
 
 1. Realizar un "git clone https://github.com/Jorgedehaz/FantasyOne" en el lugar deseado.
 2. Acceder mediante el terminal (CMD) a la ubicación del proyecto.
