@@ -14,3 +14,7 @@ Si deseamos hacer peticiones en POSTMAN o modificar la BD directamente podremos 
 
 1. Debemos hacer peticiones a localhost:8080 . Ejemplo: "http://localhost:8080/api/auth/login"
 2. Debemos establecer una conexión a localhost:3307 en MySQL o "mysql -h 127.0.0.1 -P 3307 -u fantasy -p" desde el CMD
+
+Si deseamos inicializar resultados de prueba para comprobar el funcionamiento de graáficas, clasificación, etc:
+
+1. Debemos realizar un POST http://localhost:8080/api/resultados/initialize
