@@ -17,4 +17,49 @@ Si deseamos hacer peticiones en POSTMAN o modificar la BD directamente podremos 
 
 Si deseamos inicializar resultados de prueba para comprobar el funcionamiento de graáficas, clasificación, etc:
 
-1. Debemos realizar un POST http://localhost:8080/api/resultados/initialize
+1.Debemos realizar POST http://localhost:8080/api/carreras de las carreras indicadas abajo.
+2. Debemos realizar un POST http://localhost:8080/api/resultados/initialize
+
+
+[
+  {
+    "nombreGP": "Australian Grand Prix",
+    "circuito": "Albert Park",
+    "fecha": "2024-03-17",
+    "temporada": 2024,
+    "meetingKey": 1219,
+    "externalId": "1219"
+  },
+  {
+    "nombreGP": "Bahrain Grand Prix",
+    "circuito": "Bahrain International Circuit",
+    "fecha": "2024-03-31",
+    "temporada": 2024,
+    "meetingKey": 1220,
+    "externalId": "1220"
+  },
+  {
+    "nombreGP": "Chinese Grand Prix",
+    "circuito": "Shanghai International Circuit",
+    "fecha": "2024-04-14",
+    "temporada": 2024,
+    "meetingKey": 1221,
+    "externalId": "1221"
+  },
+  {
+    "nombreGP": "Miami Grand Prix",
+    "circuito": "Miami International Autodrome",
+    "fecha": "2024-05-05",
+    "temporada": 2024,
+    "meetingKey": 1222,
+    "externalId": "1222"
+  },
+  {
+    "nombreGP": "Monaco Grand Prix",
+    "circuito": "Monaco",
+    "fecha": "2024-05-15",
+    "temporada": 2024,
+    "meetingKey": 1223,
+    "externalId": "1223"
+  }
+]
