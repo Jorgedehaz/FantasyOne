@@ -37,7 +37,7 @@ public class ResultadoInitializeService {
     @Transactional
     public List<ResultadoCarrera> importarDesdeJson() throws IOException {
         // 1) Abrir el JSON desde classpath
-        InputStream is = getClass().getResourceAsStream("/resultados.json");
+        InputStream is = getClass().getClassLoader().getResourceAsStream("resultados.json");
         if (is == null) {
             throw new FileNotFoundException("No se encontró resultados.json en el classpath");
         }
