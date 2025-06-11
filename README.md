@@ -17,6 +17,8 @@ Si deseamos hacer peticiones en POSTMAN o modificar la BD directamente podremos 
 
 Si deseamos inicializar resultados de prueba para comprobar el funcionamiento de graáficas, clasificación, etc:
 
+(Loguearse en la cuenta de POSTMAN, tiene la carpeta guardada con las peticiones y pruebas)
+
 1.Debemos realizar POST http://localhost:8080/api/carreras de las carreras indicadas abajo.
 2. Debemos realizar un POST http://localhost:8080/api/resultados/initialize
 
